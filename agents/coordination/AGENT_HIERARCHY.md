@@ -16,42 +16,52 @@ This document defines the hierarchical priority order for agent execution when m
 ### **Priority Level 3: Architecture & Design**
 6. **system-architecture-designer** - High-level system design
 7. **ui-ux-designer** - User interface design and experience architecture
+8. **cloud-architecture-specialist** - Cloud-native architecture and multi-cloud strategies
+9. **api-design-specialist** - REST/GraphQL/gRPC API design and documentation
 
 ### **Priority Level 4: Data Foundation**
-8. **data-engineering-specialist** - Data pipeline design
-9. **database-implementation-specialist** - Database design and implementation
+10. **data-engineering-specialist** - Data pipeline design
+11. **database-implementation-specialist** - Database design and implementation
+12. **integration-specialist** - System integration and ETL/ELT pipelines
 
 ### **Priority Level 5: Core Development**
-10. **backend-architect** - Server-side architecture and APIs
-11. **frontend-ux-expert** - User interface development
-12. **fullstack-dev-expert** - Full-stack implementation
+13. **backend-architect** - Server-side architecture and APIs
+14. **frontend-ux-expert** - User interface development
+15. **fullstack-dev-expert** - Full-stack implementation
+16. **mobile-development-specialist** - Mobile app development (iOS/Android)
 
 ### **Priority Level 6: Specialized Features**
-13. **ai-ml-specialist** - Machine learning implementation
-14. **data-science-specialist** - Analytics and business intelligence
-15. **real-time-systems-specialist** - Performance optimization
-16. **messaging-platform-specialist** - Communication systems
-17. **ecommerce-specialist** - E-commerce features
+17. **ai-ml-specialist** - Machine learning implementation
+18. **data-science-specialist** - Analytics and business intelligence
+19. **real-time-systems-specialist** - Performance optimization
+20. **messaging-platform-specialist** - Communication systems
+21. **ecommerce-specialist** - E-commerce features
 
 ### **Priority Level 7: Enhancement & Optimization**
-18. **localization-specialist** - Internationalization
-19. **content-management-specialist** - Content organization
-20. **seo-marketing-specialist** - Search optimization
-21. **web-performance-specialist** - Performance optimization
+22. **localization-specialist** - Internationalization
+23. **content-management-specialist** - Content organization
+24. **seo-marketing-specialist** - Search optimization
+25. **web-performance-specialist** - Performance optimization
+26. **accessibility-specialist** - WCAG compliance and inclusive design
+27. **technical-writing-specialist** - Documentation and user guides
+28. **cost-optimization-specialist** - Cloud cost and FinOps
 
 ### **Priority Level 8: Quality & Security**
-22. **code-reviewer** - Code quality assurance
-23. **web-security-specialist** - Security implementation
-24. **qa-reliability-engineer** - Testing and reliability
+29. **code-reviewer** - Code quality assurance
+30. **web-security-specialist** - Security implementation
+31. **qa-reliability-engineer** - Testing and reliability
+32. **legal-compliance-specialist** - Regulatory compliance and privacy
 
 ### **Priority Level 9: Deployment & Operations**
-25. **devops-infrastructure-specialist** - Infrastructure and CI/CD
-26. **production-validation-specialist** - Production readiness
-27. **web-server-pm** - Project management
+33. **devops-infrastructure-specialist** - Infrastructure and CI/CD
+34. **production-validation-specialist** - Production readiness
+35. **web-server-pm** - Project management
+36. **sre-specialist** - Site reliability and incident response
+37. **monitoring-observability-specialist** - System monitoring and alerting
 
 ### **Priority Level 10: Specialized Domains**
-28. **art-gallery-specialist** - Art and creative industries
-29. **image-ai-specialist** - Image processing and computer vision
+38. **art-gallery-specialist** - Art and creative industries
+39. **image-ai-specialist** - Image processing and computer vision
 
 ## Execution Rules
 
@@ -107,4 +117,4 @@ This hierarchy must be updated when:
 - New priority patterns emerge from usage
 
 Last Updated: [Current Date]
-Total Agents: 29
+Total Agents: 39

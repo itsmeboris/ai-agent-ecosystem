@@ -308,24 +308,32 @@ When delegating to @leverage-ai-agents, provide:
 - `database-implementation-specialist`: Database design, optimization, and implementation
 - `frontend-ux-expert`: User interface development and experience optimization
 - `code-reviewer`: Code quality assurance and best practices enforcement
+- `mobile-development-specialist`: iOS/Android native and cross-platform development
+- `cloud-architecture-specialist`: AWS/Azure/GCP cloud-native architecture and optimization
+- `api-design-specialist`: REST/GraphQL/gRPC API design and implementation
 
 **Data & Intelligence Systems:**
 - `data-engineering-specialist`: Data pipeline design and processing workflows
 - `ai-ml-specialist`: Machine learning model implementation and NLP systems
 - `data-science-specialist`: Business intelligence and statistical analysis
 - `real-time-systems-specialist`: Performance optimization and concurrent processing
+- `integration-specialist`: System integration, ETL/ELT, and API connectivity
 
 **User Experience & Communication:**
 - `messaging-platform-specialist`: Conversational interfaces and messaging integration
 - `localization-specialist`: Internationalization and cultural adaptation
 - `ui-ux-designer`: User interface design and experience architecture
 - `content-management-specialist`: Digital content organization and workflow management
+- `accessibility-specialist`: WCAG compliance and inclusive design implementation
+- `technical-writing-specialist`: API docs, user guides, and technical documentation
 
 **Security & Operations:**
 - `web-security-specialist`: Security implementation and compliance
 - `web-performance-specialist`: Performance optimization and Core Web Vitals
 - `devops-infrastructure-specialist`: Infrastructure deployment and CI/CD
 - `qa-reliability-engineer`: Testing frameworks and system reliability
+- `sre-specialist`: Site reliability engineering, monitoring, and incident response
+- `monitoring-observability-specialist`: Metrics, logging, tracing, and alerting
 
 **Business & Specialized Domains:**
 - `ecommerce-specialist`: E-commerce systems and payment processing
@@ -336,6 +344,8 @@ When delegating to @leverage-ai-agents, provide:
 - `web-server-pm`: Project management for web server development initiatives
 - `fullstack-dev-expert`: Comprehensive full-stack development expertise
 - `auto-agent-generator`: Dynamic agent creation and ecosystem expansion specialist
+- `legal-compliance-specialist`: GDPR, CCPA, HIPAA, and regulatory compliance
+- `cost-optimization-specialist`: Cloud cost optimization and FinOps practices
 
 **Specialized Industry Domains:**
 - `art-gallery-specialist`: Art gallery operations and creative industry expertise

@@ -162,6 +162,9 @@ When coordinating multiple agents and the user requests execution, you must mana
 - **frontend-ux-expert**: User interface development and experience optimization
 - **code-reviewer**: Code quality assurance and best practices enforcement
 - **fullstack-dev-expert**: Comprehensive full-stack development expertise
+- **mobile-development-specialist**: iOS/Android native and cross-platform development
+- **cloud-architecture-specialist**: AWS/Azure/GCP cloud-native architecture and optimization
+- **api-design-specialist**: REST/GraphQL/gRPC API design and implementation
 
 **Data & Intelligence Systems:**
 
@@ -169,6 +172,7 @@ When coordinating multiple agents and the user requests execution, you must mana
 - **ai-ml-specialist**: Machine learning model implementation and NLP systems
 - **data-science-specialist**: Business intelligence and statistical analysis
 - **real-time-systems-specialist**: Performance optimization and concurrent processing
+- **integration-specialist**: System integration, ETL/ELT, and API connectivity
 
 **User Experience & Communication:**
 
@@ -176,6 +180,8 @@ When coordinating multiple agents and the user requests execution, you must mana
 - **localization-specialist**: Internationalization and cultural adaptation
 - **ui-ux-designer**: User interface design and experience architecture
 - **content-management-specialist**: Digital content organization and workflow management
+- **accessibility-specialist**: WCAG compliance and inclusive design implementation
+- **technical-writing-specialist**: API docs, user guides, and technical documentation
 
 **Security & Operations:**
 
@@ -184,6 +190,8 @@ When coordinating multiple agents and the user requests execution, you must mana
 - **devops-infrastructure-specialist**: Infrastructure deployment and CI/CD
 - **qa-reliability-engineer**: Testing frameworks and system reliability
 - **production-validation-specialist**: Production readiness and deployment validation
+- **sre-specialist**: Site reliability engineering, monitoring, and incident response
+- **monitoring-observability-specialist**: Metrics, logging, tracing, and alerting
 
 **Business & Marketing:**
 
@@ -192,6 +200,8 @@ When coordinating multiple agents and the user requests execution, you must mana
 - **web-server-pm**: Project management for web server development initiatives
 - **documentation-research-specialist**: Technical documentation and research
 - **web-search-specialist**: Web research and competitive intelligence specialist
+- **legal-compliance-specialist**: GDPR, CCPA, HIPAA, and regulatory compliance
+- **cost-optimization-specialist**: Cloud cost optimization and FinOps practices
 
 **Specialized Industry Domains:**
 
