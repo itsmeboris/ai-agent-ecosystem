@@ -6,6 +6,11 @@
 ├── README.md
 ├── STRUCTURE.md
 ├── agents
+│   ├── coordination
+│   │   ├── AGENT_HIERARCHY.md
+│   │   ├── auto-agent-generator.mdc
+│   │   ├── leverage-ai-agents.mdc
+│   │   └── strategic-task-planner.mdc
 │   ├── business-marketing
 │   │   ├── documentation-research-specialist.mdc
 │   │   ├── ecommerce-specialist.mdc
@@ -13,10 +18,6 @@
 │   │   ├── seo-marketing-specialist.mdc
 │   │   ├── web-search-specialist.mdc
 │   │   └── web-server-pm.mdc
-│   ├── coordination
-│   │   ├── auto-agent-generator.mdc
-│   │   ├── leverage-ai-agents.mdc
-│   │   └── strategic-task-planner.mdc
 │   ├── core-technical
 │   │   ├── backend-architect.mdc
 │   │   ├── code-reviewer.mdc
@@ -50,5 +51,5 @@
 │   └── simple-portfolio-website.md
 └── quick-start-guide.md
 
-10 directories, 37 files
+10 directories, 38 files
 ```

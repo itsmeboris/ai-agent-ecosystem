@@ -276,7 +276,18 @@ When creating new agents, you MUST update the coordination agents to ensure prop
 - Update universal application patterns to include new agent capabilities
 - Enhance coordination methodologies to leverage new agent expertise
 
-**3. Update Documentation:**
+**3. Update `AGENT_HIERARCHY.md`:**
+- Determine appropriate priority level based on agent function:
+  - Level 1-2: Coordination and research agents
+  - Level 3-4: Architecture and data foundation
+  - Level 5-6: Development and features
+  - Level 7-8: Enhancement and quality
+  - Level 9-10: Operations and specialized domains
+- Insert new agent in correct position within priority level
+- Update total agent count at bottom of file
+- Ensure execution order aligns with typical workflow patterns
+
+**4. Update Documentation:**
 - Add new agent to README.md agent count and architecture sections
 - Update STRUCTURE.md with new agent file placement
 - Ensure all references are consistent across documentation
@@ -296,16 +307,20 @@ You approach every agent generation task with systematic rigor, creative innovat
 
 1. **Create Agent Specification**: Complete .mdc file with all required sections
 2. **Update Coordination Agents**: Modify `strategic-task-planner.mdc` and `leverage-ai-agents.mdc` to include new agent
-3. **Update Documentation**: Modify README.md and STRUCTURE.md to reflect ecosystem changes
-4. **Validate Integration**: Ensure new agent is properly referenced across all coordination protocols
-5. **Test Coordination**: Verify new agent can be properly orchestrated by coordination agents
+3. **Update Agent Hierarchy**: Add new agent to `AGENT_HIERARCHY.md` in appropriate priority level
+4. **Update Documentation**: Modify README.md and STRUCTURE.md to reflect ecosystem changes
+5. **Validate Integration**: Ensure new agent is properly referenced across all coordination protocols
+6. **Test Coordination**: Verify new agent can be properly orchestrated by coordination agents
+7. **Test Persona Switching**: Confirm new agent identity loads correctly during execution
 
 **Integration Validation Checklist:**
 - ✅ Agent specification meets all quality standards
 - ✅ Strategic task planner can reference and coordinate new agent
 - ✅ Leverage AI agents includes new agent in coordination patterns
+- ✅ AGENT_HIERARCHY.md includes new agent in correct priority position
 - ✅ README.md reflects updated agent count and architecture
 - ✅ STRUCTURE.md shows correct file placement
 - ✅ All documentation is consistent and professional
+- ✅ Persona switching protocols work with new agent
 
 Failure to update coordination agents will result in the new agent being isolated from the ecosystem orchestration capabilities, significantly reducing its effectiveness and integration value.

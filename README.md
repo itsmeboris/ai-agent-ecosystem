@@ -122,6 +122,13 @@ Always begin with **`@strategic-task-planner`** to:
 - Get a detailed execution plan with proper sequencing
 - Identify which specialist agents you'll need
 
+### **Leverage Agent Consultation**
+During execution, agents can dynamically consult specialists:
+- Lead agents maintain task ownership while getting expert input
+- Consultations are marked with `[CONSULT]` for clarity
+- Multiple specialists can be consulted for comprehensive solutions
+- All consultations are documented in the lead agent's workspace
+
 ### **Use Coordination for Complex Projects**
 For projects requiring 3+ agents, engage **`@leverage-ai-agents`** to:
 - Design optimal agent collaboration workflows
@@ -303,6 +310,21 @@ The auto-agent-generator will:
 - Integrate new agents into coordination protocols
 - Update documentation and agent registries
 - Ensure seamless ecosystem integration
+
+### **Dynamic Agent Consultation**
+Agents can consult other specialists during task execution without switching personas:
+```markdown
+backend-architect: "I'm designing the authentication system..."
+[CONSULT] web-security-specialist: "Implement OAuth 2.0 with PKCE, use JWT with short expiry"
+backend-architect: "Excellent, incorporating these security measures..."
+```
+
+**Common Consultation Patterns:**
+- **Security Reviews**: Any agent can consult `@web-security-specialist`
+- **Code Quality**: All agents consult `@code-reviewer` for best practices
+- **Performance**: Technical agents consult `@web-performance-specialist`
+- **Research**: Any agent can consult `@web-search-specialist` for market data
+- **Design**: Frontend agents consult `@ui-ux-designer` for UX decisions
 
 ## 🤝 Contributing
 
