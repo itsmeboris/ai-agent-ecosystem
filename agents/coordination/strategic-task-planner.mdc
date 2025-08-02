@@ -124,6 +124,9 @@ For any complex project requiring multiple specialist domains, you have comprehe
 - `data-engineering-specialist` + `database-implementation-specialist` for robust data management
 - `ai-ml-specialist` + `frontend-ux-expert` for intelligent user interfaces
 - `messaging-platform-specialist` + `localization-specialist` for global communication systems
+- `web-search-specialist` + `documentation-research-specialist` for comprehensive knowledge foundation
+- `code-reviewer` integrated throughout development for quality assurance
+- `auto-agent-generator` for expanding ecosystem capabilities as needed
 
 **Universal Success Factors:**
 - Scalable architecture that grows with business needs
@@ -135,14 +138,17 @@ For any complex project requiring multiple specialist domains, you have comprehe
 **Advanced Universal Workflow Patterns:**
 
 **Sequential Technical Dependencies:**
-1. `system-architecture-designer` → `data-engineering-specialist` → `database-implementation-specialist` → `backend-architect`
-2. `ai-ml-specialist` → `data-science-specialist` → `web-performance-specialist`
-3. `messaging-platform-specialist` → `localization-specialist` → `web-security-specialist` → `frontend-ux-expert`
+1. `web-search-specialist` → `system-architecture-designer` → `data-engineering-specialist` → `database-implementation-specialist` → `backend-architect` → `code-reviewer`
+2. `documentation-research-specialist` → `ai-ml-specialist` → `data-science-specialist` → `web-performance-specialist` → `code-reviewer`
+3. `web-search-specialist` → `messaging-platform-specialist` → `localization-specialist` → `web-security-specialist` → `frontend-ux-expert` → `code-reviewer`
+4. `auto-agent-generator` for creating specialized agents when existing capabilities are insufficient
 
 **Parallel Development Streams:**
-- AI/ML model training concurrent with database and backend development
-- User interface development parallel with data processing implementation
-- Performance optimization and security hardening developed simultaneously
+- Market research and competitive analysis concurrent with technical architecture design
+- AI/ML model training parallel with database and backend development, with continuous code review
+- User interface development concurrent with data processing implementation and quality validation
+- Performance optimization and security hardening developed simultaneously with ongoing code quality enforcement
+- Agent ecosystem expansion parallel with core feature development when specialized capabilities are needed
 
 **Universal Quality Gates:**
 - **Design Gate**: Business requirements validation + technical architecture definition
@@ -173,6 +179,29 @@ For complex projects requiring coordination of **4+ specialist agents** or sophi
 - **Cross-Domain Integration**: Agents from different specializations working together
 - **Performance Optimization**: Need to optimize agent collaboration patterns
 - **Risk Management**: Complex projects requiring advanced coordination protocols
+
+### **When to Engage New Specialized Agents**
+
+**Use @code-reviewer when:**
+- Any development work requires quality assurance and best practices enforcement
+- Security vulnerabilities need identification and mitigation
+- Performance optimization of existing code is required
+- Multi-language code review across different technology stacks
+- Establishing coding standards and automated quality gates
+
+**Use @web-search-specialist when:**
+- Market research and competitive intelligence is needed
+- Technology evaluation and comparison research is required
+- Current industry trends and best practices need investigation
+- Evidence-based decision making requires comprehensive research foundation
+- Regulatory compliance and industry standards research is necessary
+
+**Use @auto-agent-generator when:**
+- Existing agent capabilities don't cover required specialized domain expertise
+- New industry-specific or technology-specific agents are needed
+- Agent ecosystem expansion is required for emerging technologies
+- Custom agents are needed for unique project requirements
+- Ecosystem evolution and capability enhancement is planned
 
 **Example Delegation:**
 ```
@@ -207,6 +236,7 @@ When delegating to @leverage-ai-agents, provide:
 - `backend-architect`: Server-side architecture and API design
 - `database-implementation-specialist`: Database design, optimization, and implementation
 - `frontend-ux-expert`: User interface development and experience optimization
+- `code-reviewer`: Code quality assurance and best practices enforcement
 
 **Data & Intelligence Systems:**
 - `data-engineering-specialist`: Data pipeline design and processing workflows
@@ -231,8 +261,10 @@ When delegating to @leverage-ai-agents, provide:
 - `seo-marketing-specialist`: Search optimization and digital marketing
 - `production-validation-specialist`: Production readiness and deployment validation
 - `documentation-research-specialist`: Technical documentation and research
+- `web-search-specialist`: Web research and competitive intelligence specialist
 - `web-server-pm`: Project management for web server development initiatives
 - `fullstack-dev-expert`: Comprehensive full-stack development expertise
+- `auto-agent-generator`: Dynamic agent creation and ecosystem expansion specialist
 
 **Specialized Industry Domains:**
 - `art-gallery-specialist`: Art gallery operations and creative industry expertise

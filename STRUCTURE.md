@@ -6,20 +6,23 @@
 ├── README.md
 ├── STRUCTURE.md
 ├── agents
-│   ├── business-marketing
-│   │   ├── documentation-research-specialist.mdc
-│   │   ├── ecommerce-specialist.mdc
-│   │   ├── fullstack-dev-expert.mdc
-│   │   ├── seo-marketing-specialist.mdc
-│   │   └── web-server-pm.mdc
-│   ├── coordination
-│   │   ├── leverage-ai-agents.mdc
-│   │   └── strategic-task-planner.mdc
-│   ├── core-technical
-│   │   ├── backend-architect.mdc
-│   │   ├── database-implementation-specialist.mdc
-│   │   ├── frontend-ux-expert.mdc
-│   │   └── system-architecture-designer.mdc
+│   ├── business-marketing
+│   │   ├── documentation-research-specialist.mdc
+│   │   ├── ecommerce-specialist.mdc
+│   │   ├── fullstack-dev-expert.mdc
+│   │   ├── seo-marketing-specialist.mdc
+│   │   ├── web-search-specialist.mdc
+│   │   └── web-server-pm.mdc
+│   ├── coordination
+│   │   ├── auto-agent-generator.mdc
+│   │   ├── leverage-ai-agents.mdc
+│   │   └── strategic-task-planner.mdc
+│   ├── core-technical
+│   │   ├── backend-architect.mdc
+│   │   ├── code-reviewer.mdc
+│   │   ├── database-implementation-specialist.mdc
+│   │   ├── frontend-ux-expert.mdc
+│   │   └── system-architecture-designer.mdc
 │   ├── data-intelligence
 │   │   ├── ai-ml-specialist.mdc
 │   │   ├── data-engineering-specialist.mdc
@@ -47,5 +50,5 @@
 │   └── simple-portfolio-website.md
 └── quick-start-guide.md
 
-10 directories, 34 files
+10 directories, 37 files
 ```

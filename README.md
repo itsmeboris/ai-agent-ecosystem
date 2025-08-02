@@ -4,7 +4,7 @@ A comprehensive collection of specialized AI agents designed to work together as
 
 ## 🎯 Overview
 
-This repository contains **26 professional AI agents** that collaborate to deliver exceptional results across any project type or industry. Each agent is a specialist in their domain, designed to work seamlessly with others through structured coordination protocols.
+This repository contains **29 professional AI agents** that collaborate to deliver exceptional results across any project type or industry. Each agent is a specialist in their domain, designed to work seamlessly with others through structured coordination protocols.
 
 ### **What Makes This Special**
 
@@ -16,17 +16,19 @@ This repository contains **26 professional AI agents** that collaborate to deliv
 
 ## 🏗️ Agent Architecture
 
-### **Coordination Layer** (2 Agents)
+### **Coordination Layer** (3 Agents)
 The orchestration brain of the ecosystem:
 - **`strategic-task-planner`**: Primary orchestrator for complex multi-step projects
 - **`leverage-ai-agents`**: Meta-coordinator for agent ecosystem optimization
+- **`auto-agent-generator`**: Dynamic agent creation and ecosystem expansion specialist
 
-### **Core Technical Foundation** (4 Agents)
+### **Core Technical Foundation** (5 Agents)
 Essential building blocks for any technical project:
 - **`system-architecture-designer`**: High-level system design and architectural decisions
 - **`backend-architect`**: Server-side architecture and API design
 - **`database-implementation-specialist`**: Database design, optimization, and implementation
 - **`frontend-ux-expert`**: User interface development and experience optimization
+- **`code-reviewer`**: Code quality assurance and best practices enforcement
 
 ### **Data & Intelligence Systems** (4 Agents)
 Transform data into intelligent features:
@@ -50,13 +52,14 @@ Ensure reliability and security:
 - **`qa-reliability-engineer`**: Testing frameworks and system reliability
 - **`production-validation-specialist`**: Production readiness and deployment validation
 
-### **Business & Marketing** (5 Agents)
+### **Business & Marketing** (6 Agents)
 Drive business success:
 - **`ecommerce-specialist`**: E-commerce systems and payment processing
 - **`seo-marketing-specialist`**: Search optimization and digital marketing
 - **`web-server-pm`**: Project management for web server development
 - **`documentation-research-specialist`**: Technical documentation and research
 - **`fullstack-dev-expert`**: Comprehensive full-stack development expertise
+- **`web-search-specialist`**: Web research and competitive intelligence specialist
 
 ### **Specialized Industry Domains** (2 Agents)
 Domain-specific expertise:
@@ -150,9 +153,11 @@ For projects requiring 3+ agents, engage **`@leverage-ai-agents`** to:
 - **SEO & Marketing**: `@seo-marketing-specialist`
 - **Project Management**: `@web-server-pm`
 - **Technical Documentation**: `@documentation-research-specialist`
+- **Web Research & Competitive Intelligence**: `@web-search-specialist`
 
 ### **Quality Assurance**
 - Each agent validates their work before handoff
+- Use **`@code-reviewer`** for code quality assurance and best practices enforcement
 - Use **`@qa-reliability-engineer`** for comprehensive testing
 - Use **`@production-validation-specialist`** before deployment
 - Regular check-ins with coordination agents for complex projects
@@ -280,7 +285,24 @@ Combine specialized knowledge:
 Art Gallery + E-commerce: @art-gallery-specialist + @ecommerce-specialist
 AI + Messaging: @ai-ml-specialist + @messaging-platform-specialist
 Performance + Security: @real-time-systems-specialist + @web-security-specialist
+Research + Documentation: @web-search-specialist + @documentation-research-specialist
 ```
+
+### **Creating New Specialized Agents**
+When your project requires domain expertise not covered by existing agents:
+```markdown
+@auto-agent-generator: Create a [domain]-specialist agent for [specific expertise area]
+
+Example:
+@auto-agent-generator: Create a blockchain-development-specialist agent for smart contract development and DeFi protocols
+```
+
+The auto-agent-generator will:
+- Analyze requirements and determine optimal agent categorization
+- Create comprehensive agent specifications following ecosystem standards
+- Integrate new agents into coordination protocols
+- Update documentation and agent registries
+- Ensure seamless ecosystem integration
 
 ## 🤝 Contributing
 
@@ -294,6 +316,7 @@ This ecosystem is designed to be:
 - Follow the workspace management protocol
 - Include comprehensive expertise descriptions
 - Maintain professional tone and deep technical knowledge
+- Use **`@auto-agent-generator`** for creating new agents to ensure consistency and proper integration
 
 ## 📄 License
 
@@ -301,6 +324,6 @@ This AI Agent Ecosystem is designed for professional use across any industry or 
 
 ---
 
-**Transform how you approach complex challenges. Instead of working alone, work with a team of 26 specialized professionals who never sleep, never forget, and always coordinate perfectly.**
+**Transform how you approach complex challenges. Instead of working alone, work with a team of 29 specialized professionals who never sleep, never forget, and always coordinate perfectly.**
 
 **Ready to get started? Begin with `@strategic-task-planner` and watch your project come together with professional precision.**
