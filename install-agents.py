@@ -99,6 +99,24 @@ def copy_agent(agent_name: str, source_category: str, target_dir: Path) -> bool:
         print(f"❌ Error copying {agent_name}.mdc: {e}")
         return False
 
+def copy_agent_hierarchy(target_dir: Path) -> bool:
+    """Copy the AGENT_HIERARCHY.md file to target directory."""
+    agents_dir = get_agents_directory()
+    hierarchy_file = agents_dir / "coordination" / "AGENT_HIERARCHY.md"
+    target_file = target_dir / "AGENT_HIERARCHY.md"
+
+    if not hierarchy_file.exists():
+        print(f"⚠️  Warning: AGENT_HIERARCHY.md not found at {hierarchy_file}")
+        return False
+
+    try:
+        shutil.copy2(hierarchy_file, target_file)
+        print(f"✅ Copied AGENT_HIERARCHY.md")
+        return True
+    except Exception as e:
+        print(f"❌ Error copying AGENT_HIERARCHY.md: {e}")
+        return False
+
 def install_agents(target_dir: Path, agent_list: List[str] = None, categories: List[str] = None) -> None:
     """Install specified agents or all agents to target directory."""
     available_agents = discover_agents()
@@ -106,6 +124,9 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
     if not available_agents:
         print("❌ No agents found in the repository")
         return
+
+    # Always copy the AGENT_HIERARCHY.md file first
+    hierarchy_copied = copy_agent_hierarchy(target_dir)
 
     copied_count = 0
     total_count = 0
@@ -158,6 +179,10 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
     # Summary
     print(f"\n🎯 Installation Summary:")
     print(f"   ✅ Successfully copied: {copied_count} agents")
+    if hierarchy_copied:
+        print(f"   ✅ Agent hierarchy file: AGENT_HIERARCHY.md")
+    else:
+        print(f"   ⚠️  Agent hierarchy file: AGENT_HIERARCHY.md (failed)")
     if total_count > copied_count:
         print(f"   ⚠️  Failed or skipped: {total_count - copied_count} agents")
     print(f"   📁 Target directory: {target_dir}")
@@ -165,6 +190,8 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
     if copied_count > 0:
         print(f"\n🚀 Ready to use! Restart your IDE to load the new agents.")
         print(f"   Test with: @strategic-task-planner: Hello")
+        if hierarchy_copied:
+            print(f"   📋 Agent coordination enabled with hierarchy support")
 
 def list_available_categories():
     """List all available agent categories and their agents."""

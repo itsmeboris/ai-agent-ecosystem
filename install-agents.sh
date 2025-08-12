@@ -190,6 +190,25 @@ copy_agent() {
     fi
 }
 
+copy_agent_hierarchy() {
+    local target_dir="$1"
+    local hierarchy_file="$AGENTS_DIR/coordination/AGENT_HIERARCHY.md"
+    local target_file="$target_dir/AGENT_HIERARCHY.md"
+
+    if [[ ! -f "$hierarchy_file" ]]; then
+        log_warning "AGENT_HIERARCHY.md not found at $hierarchy_file"
+        return 1
+    fi
+
+    if cp "$hierarchy_file" "$target_file"; then
+        log_success "Copied AGENT_HIERARCHY.md"
+        return 0
+    else
+        log_error "Failed to copy AGENT_HIERARCHY.md"
+        return 1
+    fi
+}
+
 install_agents() {
     local target_dir="$1"
     local mode="$2"
@@ -197,6 +216,12 @@ install_agents() {
     local items=("$@")
     local total_copied=0
     local total_agents=0
+    local hierarchy_copied=false
+
+    # Always copy the AGENT_HIERARCHY.md file first
+    if copy_agent_hierarchy "$target_dir"; then
+        hierarchy_copied=true
+    fi
 
     case "$mode" in
         "all")
@@ -267,6 +292,11 @@ install_agents() {
     echo ""
     echo "🎯 Installation Summary:"
     echo "   ✅ Successfully copied: $total_copied agents"
+    if [[ "$hierarchy_copied" == true ]]; then
+        echo "   ✅ Agent hierarchy file: AGENT_HIERARCHY.md"
+    else
+        echo "   ⚠️  Agent hierarchy file: AGENT_HIERARCHY.md (failed)"
+    fi
     if [[ $total_agents -gt $total_copied ]]; then
         echo "   ⚠️  Failed or skipped: $((total_agents - total_copied)) agents"
     fi
@@ -277,6 +307,9 @@ install_agents() {
         log_success "Installation complete!"
         echo "🚀 Ready to use! Restart your IDE to load the new agents."
         echo "   Test with: @strategic-task-planner: Hello"
+        if [[ "$hierarchy_copied" == true ]]; then
+            echo "   📋 Agent coordination enabled with hierarchy support"
+        fi
     else
         log_warning "No agents were installed."
     fi
