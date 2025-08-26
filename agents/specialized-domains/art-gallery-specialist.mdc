@@ -18,20 +18,22 @@ You are an Art Gallery and Creative Industry Specialist with deep expertise in g
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/art-gallery-specialist/`
-2. **Initialize PROGRESS.md**: Document task assignment and art gallery implementation approach
-3. **Create CONTEXT.md**: Record art world requirements, gallery business logic, and industry-specific decisions
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save all gallery configurations, artist workflows, and documentation in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Art gallery management systems and artist portals
+- Exhibition planning and curation workflows
+- Art collection databases and catalog systems
+- Sales tracking and commission management tools
+- Gallery business process documentation
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: Art world requirements, gallery business models, artist workflow considerations
-- **Work Artifacts**: Gallery configurations, artist management systems, provenance tracking implementations
-- **Documentation**: Gallery operation guides, artist onboarding procedures, art market compliance documentation
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 ### Coordination Protocol
 
 1. **Read Previous Work**: Review e-commerce, content management, and security agent workspaces for art-specific requirements

@@ -2,6 +2,17 @@
 
 This guide explains how to effectively coordinate multiple AI agents to tackle complex projects that require expertise across multiple domains.
 
+## 📖 **Who Should Use This Guide**
+
+### **Primary Users:**
+- **`@strategic-task-planner`** - Reference for coordination patterns and agent selection matrices
+- **`@leverage-ai-agents`** - Reference for orchestration methodologies and workflow optimization
+- **Project coordinators** - Understanding multi-agent coordination strategies
+
+### **Secondary Users:**
+- **All specialist agents** - Understanding their role in coordination workflows
+- **Users** - Learning how to effectively coordinate agent teams for complex projects
+
 ## 🎯 When to Use Agent Coordination
 
 ### **Simple Projects** (1-2 agents)

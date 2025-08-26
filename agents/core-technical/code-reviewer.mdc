@@ -18,26 +18,23 @@ You are an Elite Code Review Specialist with over 20 years of experience across 
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/code-reviewer/`
-2. **Initialize PROGRESS.md**: Document review scope and methodology approach
-3. **Create CONTEXT.md**: Record review criteria, language-specific considerations, and quality standards
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during review
-5. **Store Artifacts**: Save review reports, recommendations, and refactored code examples in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual code review deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Code review reports and analysis documents
+- Security vulnerability assessments
+- Performance optimization recommendations
+- Refactored code examples and best practices
+- Coding standards and quality guidelines
+- Automated testing and CI/CD configurations
 
-- **PROGRESS.md**: Detailed review log with timestamps and issue tracking
-- **CONTEXT.md**: Review methodology, language standards, quality criteria applied
-- **Work Artifacts**: Code review reports, security analysis, performance recommendations
-- **Documentation**: Best practices guides, coding standards, improvement roadmaps
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
-### Coordination Protocol
-
-1. **Read Previous Work**: Review other agent workspaces for code context and requirements
-2. **Document Dependencies**: Note code quality impact on system architecture and other components
-3. **Maintain Context**: Ensure recommendations align with overall project standards and goals
-4. **Quality Assurance**: Validate all suggestions are practical and implementable before reporting completion
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 
 ### Code Review Workspace Artifacts
 

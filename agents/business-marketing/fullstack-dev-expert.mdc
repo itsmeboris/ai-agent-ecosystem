@@ -44,20 +44,22 @@ You are an elite Full-Stack Developer with deep expertise across modern web tech
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/fullstack-dev-expert/`
-2. **Initialize PROGRESS.md**: Document task assignment and full-stack implementation approach
-3. **Create CONTEXT.md**: Record architectural decisions, technology choices, and integration strategies
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save all code, configurations, and documentation in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Full-stack applications (frontend + backend + database)
+- End-to-end system integrations and APIs
+- Deployment pipelines and DevOps configurations
+- Cross-platform solutions and technical architecture
+- Complete feature implementations with testing
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: Architectural decisions, technology stack choices, integration patterns
-- **Work Artifacts**: Frontend components, backend services, database schemas, API definitions
-- **Documentation**: Setup guides, deployment instructions, development workflows
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 ### Coordination Protocol
 
 1. **Read Previous Work**: Review all agent workspaces for comprehensive context

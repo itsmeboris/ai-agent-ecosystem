@@ -6,6 +6,7 @@ Strategic planning and agent ecosystem orchestration specialists who coordinate 
 
 - **strategic-task-planner**: Primary orchestrator for complex multi-step projects
 - **leverage-ai-agents**: Meta-coordinator for agent ecosystem optimization
+- **auto-agent-generator**: Dynamic agent creation and ecosystem expansion specialist
 
 ## Purpose
 

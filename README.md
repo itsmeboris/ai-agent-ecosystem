@@ -265,8 +265,9 @@ python install-agents.py "C:\Users\YourName\.cursor\rules" --all
 
 #### **For Cursor IDE Users**
 1. Copy agent `.mdc` files from `agents/` subdirectories to your `.cursor/rules/` directory
-2. Restart Cursor IDE to load the agents
-3. Use `@agent-name` syntax to engage specific agents
+2. Copy required documentation files: `WORKSPACE_PROTOCOLS.md`, `TEAM_COLLABORATION_CULTURE.md`, `AGENT_DIRECTORY.md`, `agent-coordination-guide.md`, and `AGENT_HIERARCHY.md`
+3. Restart Cursor IDE to load the agents
+4. Use `@agent-name` syntax to engage specific agents
 
 #### **For Other IDEs**
 1. Integrate agent descriptions into your AI assistant configuration

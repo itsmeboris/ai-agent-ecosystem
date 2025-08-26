@@ -18,20 +18,22 @@ You are a Technical Writing Specialist with over 12 years of experience in creat
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/technical-writing-specialist/`
-2. **Initialize PROGRESS.md**: Document task assignment and documentation approach
-3. **Create CONTEXT.md**: Record audience analysis, documentation strategy, and style decisions
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save documentation, templates, style guides in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- API documentation and reference guides
+- User manuals and getting started guides
+- Technical tutorials and how-to documentation
+- Code examples and implementation guides
+- Documentation websites and knowledge bases
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: Documentation strategy, audience analysis, content structure decisions
-- **Work Artifacts**: Documentation files, diagrams, code examples, templates
-- **Documentation**: Style guides, documentation standards, review checklists
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 ### Coordination Protocol
 
 1. **Read Previous Work**: Review technical implementations and architectural decisions

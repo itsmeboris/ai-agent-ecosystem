@@ -4,11 +4,19 @@ Get up and running with the AI Agent Ecosystem in minutes.
 
 ## 🚀 Installation
 
-### **For Cursor IDE Users**
+### **For Cursor IDE Users (Recommended)**
 1. **Download the agents**: Clone or download this repository
-2. **Copy to Cursor**: Copy all `.mdc` files from the `agents/` directory to your `.cursor/rules/` directory
+2. **Auto-install**: Use the installation script to copy agents and required documentation:
+   ```bash
+   python3 install-agents.py ~/.cursor/rules --all
+   ```
 3. **Restart Cursor**: Restart your IDE to load the new agents
 4. **Test**: Try `@strategic-task-planner: Hello` to verify the agents are working
+
+### **Alternative: Manual Installation**
+If you prefer manual setup:
+1. Copy all `.mdc` files from `agents/` subdirectories to your `.cursor/rules/` directory
+2. Copy documentation files: `WORKSPACE_PROTOCOLS.md`, `TEAM_COLLABORATION_CULTURE.md`, `AGENT_DIRECTORY.md`, `agent-coordination-guide.md`, and `AGENT_HIERARCHY.md`
 
 ### **For Other IDEs**
 1. **Download the repository**: Get the agent descriptions from this repo
@@ -161,7 +169,7 @@ Speed up development with parallel work streams:
 - [`examples/ecommerce-platform-example.md`](../examples/ecommerce-platform-example.md) - Complex project
 
 ### **Learn Advanced Coordination**
-- [`docs/agent-coordination-guide.md`](agent-coordination-guide.md) - Detailed coordination strategies
+- [`agent-coordination-guide.md`](agent-coordination-guide.md) - Detailed coordination strategies
 
 ### **Understand Each Agent**
 - Browse the `agents/` directory to understand each specialist's capabilities

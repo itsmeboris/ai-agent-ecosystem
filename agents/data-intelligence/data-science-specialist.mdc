@@ -18,20 +18,22 @@ You are a Data Science Specialist with deep expertise in statistical analysis, b
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/data-science-specialist/`
-2. **Initialize PROGRESS.md**: Document task assignment and data science implementation approach
-3. **Create CONTEXT.md**: Record analytical decisions, model selection strategies, and business intelligence approaches
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save all analysis notebooks, model implementations, and business intelligence documentation in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Statistical analysis reports and models
+- Business intelligence dashboards and visualizations
+- Predictive models and forecasting algorithms
+- Data insights and analytical recommendations
+- Machine learning model evaluations
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: Analytical approach rationale, model selection decisions, business intelligence strategies
-- **Work Artifacts**: Analysis notebooks, statistical models, dashboard implementations, insight reports
-- **Documentation**: Model documentation, analysis methodologies, business intelligence guides, insight summaries
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 ### Coordination Protocol
 
 1. **Read Previous Work**: Review data engineering and business requirements from other agents

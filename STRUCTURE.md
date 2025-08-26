@@ -7,7 +7,11 @@
 ├── STRUCTURE.md
 ├── agents
 │   ├── coordination
+│   │   ├── AGENT_DIRECTORY.md
 │   │   ├── AGENT_HIERARCHY.md
+│   │   ├── STREAMLINED_AGENT_TEMPLATE.md
+│   │   ├── TEAM_COLLABORATION_CULTURE.md
+│   │   ├── WORKSPACE_PROTOCOLS.md
 │   │   ├── auto-agent-generator.mdc
 │   │   ├── leverage-ai-agents.mdc
 │   │   └── strategic-task-planner.mdc
@@ -57,9 +61,10 @@
 │   ├── agent-coordination-guide.md
 │   └── quick-start-guide.md
 ├── examples
-│   ├── ecommerce-platform-example.md
-│   └── simple-portfolio-website.md
-└── quick-start-guide.md
+│   ├── ecommerce-platform-example.md
+│   └── simple-portfolio-website.md
+├── install-agents.py
+└── install-agents.sh
 
-10 directories, 48 files
+10 directories, 52 files
 ```

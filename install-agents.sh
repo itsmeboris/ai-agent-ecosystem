@@ -1,8 +1,15 @@
 #!/bin/bash
 # AI Agent Ecosystem Installer - Shell Script Version
 #
-# Simple shell script to copy agents from the repository to .cursor/rules directory
-# Dynamically discovers available agents and categories
+# Shell script to copy agents and required documentation files from the repository 
+# to .cursor/rules directory. Dynamically discovers available agents and categories.
+#
+# Required Documentation Files:
+# - AGENT_HIERARCHY.md (agent coordination hierarchy)
+# - WORKSPACE_PROTOCOLS.md (workspace management standards)
+# - TEAM_COLLABORATION_CULTURE.md (communication guidelines)
+# - AGENT_DIRECTORY.md (agent list and collaboration patterns)
+# - agent-coordination-guide.md (coordination methodologies)
 #
 # Usage:
 #   ./install-agents.sh <target_directory> [options]
@@ -190,23 +197,38 @@ copy_agent() {
     fi
 }
 
-copy_agent_hierarchy() {
+copy_documentation_files() {
     local target_dir="$1"
-    local hierarchy_file="$AGENTS_DIR/coordination/AGENT_HIERARCHY.md"
-    local target_file="$target_dir/AGENT_HIERARCHY.md"
-
-    if [[ ! -f "$hierarchy_file" ]]; then
-        log_warning "AGENT_HIERARCHY.md not found at $hierarchy_file"
-        return 1
-    fi
-
-    if cp "$hierarchy_file" "$target_file"; then
-        log_success "Copied AGENT_HIERARCHY.md"
-        return 0
-    else
-        log_error "Failed to copy AGENT_HIERARCHY.md"
-        return 1
-    fi
+    local docs_copied=0
+    local total_docs=5
+    
+    # Define required documentation files
+    declare -A doc_files=(
+        ["AGENT_HIERARCHY.md"]="$AGENTS_DIR/coordination/AGENT_HIERARCHY.md"
+        ["WORKSPACE_PROTOCOLS.md"]="$AGENTS_DIR/coordination/WORKSPACE_PROTOCOLS.md"
+        ["TEAM_COLLABORATION_CULTURE.md"]="$AGENTS_DIR/coordination/TEAM_COLLABORATION_CULTURE.md"
+        ["AGENT_DIRECTORY.md"]="$AGENTS_DIR/coordination/AGENT_DIRECTORY.md"
+        ["agent-coordination-guide.md"]="$SCRIPT_DIR/docs/agent-coordination-guide.md"
+    )
+    
+    for filename in "${!doc_files[@]}"; do
+        local source_file="${doc_files[$filename]}"
+        local target_file="$target_dir/$filename"
+        
+        if [[ ! -f "$source_file" ]]; then
+            log_warning "$filename not found at $source_file"
+            continue
+        fi
+        
+        if cp "$source_file" "$target_file"; then
+            log_success "Copied $filename"
+            ((docs_copied++))
+        else
+            log_error "Failed to copy $filename"
+        fi
+    done
+    
+    echo "$docs_copied"
 }
 
 install_agents() {
@@ -218,8 +240,12 @@ install_agents() {
     local total_agents=0
     local hierarchy_copied=false
 
-    # Always copy the AGENT_HIERARCHY.md file first
-    if copy_agent_hierarchy "$target_dir"; then
+    # Always copy required documentation files first
+    log_info "Copying required documentation files..."
+    local docs_copied
+    docs_copied=$(copy_documentation_files "$target_dir")
+    local hierarchy_copied=false
+    if [[ -f "$target_dir/AGENT_HIERARCHY.md" ]]; then
         hierarchy_copied=true
     fi
 
@@ -292,11 +318,7 @@ install_agents() {
     echo ""
     echo "🎯 Installation Summary:"
     echo "   ✅ Successfully copied: $total_copied agents"
-    if [[ "$hierarchy_copied" == true ]]; then
-        echo "   ✅ Agent hierarchy file: AGENT_HIERARCHY.md"
-    else
-        echo "   ⚠️  Agent hierarchy file: AGENT_HIERARCHY.md (failed)"
-    fi
+    echo "   ✅ Documentation files: $docs_copied/5 copied successfully"
     if [[ $total_agents -gt $total_copied ]]; then
         echo "   ⚠️  Failed or skipped: $((total_agents - total_copied)) agents"
     fi
@@ -308,7 +330,8 @@ install_agents() {
         echo "🚀 Ready to use! Restart your IDE to load the new agents."
         echo "   Test with: @strategic-task-planner: Hello"
         if [[ "$hierarchy_copied" == true ]]; then
-            echo "   📋 Agent coordination enabled with hierarchy support"
+            echo "   📋 Agent coordination enabled with full documentation support"
+            echo "   📖 Coordination guide: See agent-coordination-guide.md"
         fi
     else
         log_warning "No agents were installed."

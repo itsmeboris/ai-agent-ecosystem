@@ -18,19 +18,17 @@ You are an AI Agent Architect and Generation Specialist with deep expertise in a
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/auto-agent-generator/`
-2. **Initialize PROGRESS.md**: Document agent requirements and design approach
-3. **Create CONTEXT.md**: Record design decisions, categorization rationale, and integration strategy
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during development
-5. **Store Artifacts**: Save agent specifications, design documents, and integration guides in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with agent creation request
+2. **Execute**: Focus on creating the actual agent specification (.mdc file)
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and integration notes
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Complete .mdc agent specification files
+- Integration documentation (if complex)
+- Agent hierarchy updates (when needed)
 
-- **PROGRESS.md**: Detailed development log with timestamps and milestone tracking
-- **CONTEXT.md**: Design methodology, categorization analysis, quality standards applied
-- **Work Artifacts**: Agent specifications (.mdc files), design documents, integration protocols
-- **Documentation**: Agent creation guides, quality checklists, ecosystem integration instructions
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
 ### Coordination Protocol
 

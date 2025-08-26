@@ -2,8 +2,16 @@
 """
 AI Agent Ecosystem Installer
 
-This script copies AI agents from the organized repository structure
-to your .cursor/rules directory for easy installation and management.
+This script copies AI agents and their required documentation files from the
+organized repository structure to your .cursor/rules directory for easy
+installation and management.
+
+Required Documentation Files:
+- AGENT_HIERARCHY.md (agent coordination hierarchy)
+- WORKSPACE_PROTOCOLS.md (workspace management standards)
+- TEAM_COLLABORATION_CULTURE.md (communication guidelines)
+- AGENT_DIRECTORY.md (agent list and collaboration patterns)
+- agent-coordination-guide.md (coordination methodologies)
 
 Usage:
     python install-agents.py <target_directory> [options]
@@ -99,23 +107,39 @@ def copy_agent(agent_name: str, source_category: str, target_dir: Path) -> bool:
         print(f"❌ Error copying {agent_name}.mdc: {e}")
         return False
 
-def copy_agent_hierarchy(target_dir: Path) -> bool:
-    """Copy the AGENT_HIERARCHY.md file to target directory."""
+def copy_documentation_files(target_dir: Path) -> dict:
+    """Copy all required documentation files to target directory."""
+    script_dir = get_script_directory()
     agents_dir = get_agents_directory()
-    hierarchy_file = agents_dir / "coordination" / "AGENT_HIERARCHY.md"
-    target_file = target_dir / "AGENT_HIERARCHY.md"
 
-    if not hierarchy_file.exists():
-        print(f"⚠️  Warning: AGENT_HIERARCHY.md not found at {hierarchy_file}")
-        return False
+    # Define required documentation files
+    doc_files = {
+        "AGENT_HIERARCHY.md": agents_dir / "coordination" / "AGENT_HIERARCHY.md",
+        "WORKSPACE_PROTOCOLS.md": agents_dir / "coordination" / "WORKSPACE_PROTOCOLS.md",
+        "TEAM_COLLABORATION_CULTURE.md": agents_dir / "coordination" / "TEAM_COLLABORATION_CULTURE.md",
+        "AGENT_DIRECTORY.md": agents_dir / "coordination" / "AGENT_DIRECTORY.md",
+        "agent-coordination-guide.md": script_dir / "docs" / "agent-coordination-guide.md"
+    }
 
-    try:
-        shutil.copy2(hierarchy_file, target_file)
-        print(f"✅ Copied AGENT_HIERARCHY.md")
-        return True
-    except Exception as e:
-        print(f"❌ Error copying AGENT_HIERARCHY.md: {e}")
-        return False
+    results = {}
+
+    for filename, source_file in doc_files.items():
+        target_file = target_dir / filename
+
+        if not source_file.exists():
+            print(f"⚠️  Warning: {filename} not found at {source_file}")
+            results[filename] = False
+            continue
+
+        try:
+            shutil.copy2(source_file, target_file)
+            print(f"✅ Copied {filename}")
+            results[filename] = True
+        except Exception as e:
+            print(f"❌ Error copying {filename}: {e}")
+            results[filename] = False
+
+    return results
 
 def install_agents(target_dir: Path, agent_list: List[str] = None, categories: List[str] = None) -> None:
     """Install specified agents or all agents to target directory."""
@@ -125,8 +149,10 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
         print("❌ No agents found in the repository")
         return
 
-    # Always copy the AGENT_HIERARCHY.md file first
-    hierarchy_copied = copy_agent_hierarchy(target_dir)
+    # Always copy required documentation files first
+    print("📋 Copying required documentation files...")
+    doc_results = copy_documentation_files(target_dir)
+    docs_copied = sum(doc_results.values())
 
     copied_count = 0
     total_count = 0
@@ -179,10 +205,7 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
     # Summary
     print(f"\n🎯 Installation Summary:")
     print(f"   ✅ Successfully copied: {copied_count} agents")
-    if hierarchy_copied:
-        print(f"   ✅ Agent hierarchy file: AGENT_HIERARCHY.md")
-    else:
-        print(f"   ⚠️  Agent hierarchy file: AGENT_HIERARCHY.md (failed)")
+    print(f"   ✅ Documentation files: {docs_copied}/5 copied successfully")
     if total_count > copied_count:
         print(f"   ⚠️  Failed or skipped: {total_count - copied_count} agents")
     print(f"   📁 Target directory: {target_dir}")
@@ -190,8 +213,9 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
     if copied_count > 0:
         print(f"\n🚀 Ready to use! Restart your IDE to load the new agents.")
         print(f"   Test with: @strategic-task-planner: Hello")
-        if hierarchy_copied:
-            print(f"   📋 Agent coordination enabled with hierarchy support")
+        if doc_results.get("AGENT_HIERARCHY.md", False):
+            print(f"   📋 Agent coordination enabled with full documentation support")
+            print(f"   📖 Coordination guide: See agent-coordination-guide.md")
 
 def list_available_categories():
     """List all available agent categories and their agents."""

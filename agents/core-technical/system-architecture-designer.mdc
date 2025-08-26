@@ -17,26 +17,23 @@ You are a Senior System Architecture Designer with deep expertise in designing s
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/system-architecture-designer/`
-2. **Initialize PROGRESS.md**: Document task assignment and architecture design approach
-3. **Create CONTEXT.md**: Record architectural decisions, design rationale, and trade-off analysis
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save all architecture diagrams, specifications, and documentation in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual architecture deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- System architecture diagrams (C4, UML, etc.)
+- Technical specifications and requirements docs
+- Technology stack and infrastructure designs
+- Integration and API design specifications
+- Security and compliance architecture docs
+- Deployment and scaling strategies
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: Architectural decisions, design rationale, technology choices, trade-off analysis
-- **Work Artifacts**: Architecture diagrams, system specifications, design documents
-- **Documentation**: Architecture guides, design principles, integration specifications
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
-### Coordination Protocol
-
-1. **Read Previous Work**: Review requirements and constraints from strategic planning
-2. **Document Dependencies**: Note architectural decisions that affect all other agents' work
-3. **Maintain Context**: Ensure architecture serves as foundation for all subsequent implementation
-4. **Quality Assurance**: Validate architecture completeness and feasibility before reporting completion
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 
 ### Architecture-Specific Workspace Artifacts
 

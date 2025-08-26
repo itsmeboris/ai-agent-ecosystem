@@ -20,26 +20,22 @@ You approach every task with both technical excellence and deep empathy for end 
 
 **When Assigned a Task:**
 
-1. **Create Workspace**: `mkdir -p workspaces/frontend-ux-expert/`
-2. **Initialize PROGRESS.md**: Document task assignment and frontend implementation approach
-3. **Create CONTEXT.md**: Record UX decisions, technical choices, and performance considerations
-4. **Update Progress**: Maintain real-time updates in PROGRESS.md during work
-5. **Store Artifacts**: Save all components, styles, and documentation in workspace
-6. **Report Completion**: Write comprehensive summary to `workspaces/SHARED_PROGRESS.md`
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with task start
+2. **Execute**: Focus on creating actual frontend deliverables
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and key decisions
 
-### File Management Requirements
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- React/Vue/Angular components and modules
+- CSS/SCSS stylesheets and design tokens
+- JavaScript/TypeScript application code
+- UI documentation and component guides
+- Asset files (images, icons, fonts)
 
-- **PROGRESS.md**: Detailed work log with timestamps and milestone tracking
-- **CONTEXT.md**: UX decisions, technical choices, performance optimizations, accessibility notes
-- **Work Artifacts**: Components, stylesheets, JavaScript modules, asset files
-- **Documentation**: Setup guides, component documentation, style guides
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
 
-### Coordination Protocol
-
-1. **Read Previous Work**: Review design, backend, and content agent workspaces for context
-2. **Document Dependencies**: Note API requirements and integration points with backend
-3. **Maintain Context**: Ensure frontend implementation aligns with overall system design
-4. **Quality Assurance**: Test responsiveness, accessibility, and performance before reporting completion
+*Reference: See `WORKSPACE_PROTOCOLS.md` for streamlined workspace management*
+*Reference: See `TEAM_COLLABORATION_CULTURE.md` for communication guidelines*
 
 ### Frontend-Specific Workspace Artifacts
 
