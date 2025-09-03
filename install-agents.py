@@ -2,11 +2,14 @@
 """
 AI Agent Ecosystem Installer
 
-This script copies AI agents and their required documentation files from the
-organized repository structure to your .cursor/rules directory for easy
-installation and management.
+This script copies AI agents from the organized repository structure to your
+IDE's agent directory for easy installation and management.
 
-Required Documentation Files:
+Supports both:
+- Cursor (.cursor/rules directory, .mdc format with documentation files)
+- Claude Desktop (.claude/agents directory, .md format with model field)
+
+Documentation Files (Cursor only):
 - AGENT_HIERARCHY.md (agent coordination hierarchy)
 - WORKSPACE_PROTOCOLS.md (workspace management standards)
 - TEAM_COLLABORATION_CULTURE.md (communication guidelines)
@@ -14,10 +17,13 @@ Required Documentation Files:
 - agent-coordination-guide.md (coordination methodologies)
 
 Usage:
-    python install-agents.py <target_directory> [options]
-    python install-agents.py /path/to/.cursor/rules --all
+    # Cursor installation (default)
+    python install-agents.py ~/.cursor/rules --all
     python install-agents.py ~/.cursor/rules --category coordination
-    python install-agents.py ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist
+
+    # Claude Desktop installation (with --claude flag)
+    python install-agents.py ~/.claude/agents --claude --all
+    python install-agents.py ~/.claude/agents --claude --agents strategic-task-planner
 """
 
 import sys
@@ -78,34 +84,71 @@ def get_category_description(category: str) -> str:
     # Fallback to category name formatting
     return category.replace('-', ' ').title()
 
-def validate_target_directory(target_path: str) -> Path:
-    """Validate and create target directory if needed, ensuring proper .cursor/rules structure."""
+def validate_target_directory(target_path: str, is_claude: bool = False) -> Path:
+    """Validate and create target directory, with smart path suggestions."""
     target = Path(target_path).expanduser().resolve()
-
-    # Check if path ends with .cursor/rules
-    if not (target.name == "rules" and target.parent.name == ".cursor"):
-        print(f"⚠️  Warning: Target path doesn't end with '.cursor/rules'")
-        print(f"📁 Current path: {target}")
-        print()
-        print("What would you like to do?")
-
-        # Smart suggestion based on current path
-        if target.name == ".cursor":
-            suggestion = target / "rules"
-            print(f"1. Append 'rules' to create: {suggestion} (Recommended)")
-        else:
-            suggestion = target / ".cursor" / "rules"
-            print(f"1. Append '.cursor/rules' to create: {suggestion} (Recommended)")
-
+    
+    # Check if path already has the expected structure
+    expected_agent_dir = "agents" if is_claude else "rules"
+    expected_parent_dir = ".claude" if is_claude else ".cursor"
+    
+    if target.name == expected_agent_dir and target.parent.name == expected_parent_dir:
+        # Path is already correct
+        try:
+            target.mkdir(parents=True, exist_ok=True)
+            return target
+        except Exception as e:
+            print(f"❌ Error: Cannot create target directory {target}: {e}")
+            sys.exit(1)
+    
+    # Path doesn't match expected patterns - provide suggestions
+    install_type_name = "Claude Desktop" if is_claude else "Cursor"
+    print(f"⚠️  Warning: Target path doesn't match expected {install_type_name} structure")
+    print(f"📁 Current path: {target}")
+    print()
+    print("What would you like to do?")
+    
+    # Smart suggestions based on current path and installation type
+    if target.name == expected_parent_dir:
+        # User provided ~/.cursor or ~/.claude - suggest adding the agent directory
+        suggestion = target / expected_agent_dir
+        print(f"1. Append '{expected_agent_dir}' to create: {suggestion} (Recommended)")
         print("2. Use the given directory as-is")
         print("3. Cancel installation")
         print()
-
+        
         while True:
             try:
                 choice = input("Enter your choice (1/2/3): ").strip()
                 if choice == "1":
                     target = suggestion
+                    print(f"✅ Updated target path: {target}")
+                    break
+                elif choice == "2":
+                    print(f"✅ Using original path: {target}")
+                    break
+                elif choice == "3":
+                    print("❌ Installation cancelled by user")
+                    sys.exit(0)
+                else:
+                    print("❌ Invalid choice. Please enter 1, 2, or 3")
+            except (EOFError, KeyboardInterrupt):
+                print("\n❌ Installation cancelled by user")
+                sys.exit(0)
+        print()
+    else:
+        # User provided some other path - suggest adding full structure
+        full_suggestion = target / expected_parent_dir / expected_agent_dir
+        print(f"1. Append '{expected_parent_dir}/{expected_agent_dir}' to create: {full_suggestion} (Recommended)")
+        print("2. Use the given directory as-is")
+        print("3. Cancel installation")
+        print()
+        
+        while True:
+            try:
+                choice = input("Enter your choice (1/2/3): ").strip()
+                if choice == "1":
+                    target = full_suggestion
                     print(f"✅ Updated target path: {target}")
                     break
                 elif choice == "2":
@@ -128,22 +171,64 @@ def validate_target_directory(target_path: str) -> Path:
         print(f"❌ Error: Cannot create target directory {target}: {e}")
         sys.exit(1)
 
-def copy_agent(agent_name: str, source_category: str, target_dir: Path) -> bool:
-    """Copy a single agent from source to target directory."""
+def convert_mdc_to_claude_format(content: str) -> str:
+    """Convert .mdc format to Claude Desktop .md format."""
+    lines = content.split('\n')
+    result_lines = []
+    in_frontmatter = False
+    frontmatter_ended = False
+
+    for line in lines:
+        if line.strip() == '---' and not frontmatter_ended:
+            if not in_frontmatter:
+                in_frontmatter = True
+                result_lines.append(line)
+            else:
+                # End of frontmatter - add model field before closing
+                result_lines.append('model: sonnet')
+                result_lines.append(line)
+                frontmatter_ended = True
+        elif in_frontmatter and not frontmatter_ended:
+            # Skip globs and alwaysApply fields
+            if not line.strip().startswith(('globs:', 'alwaysApply:')):
+                result_lines.append(line)
+        else:
+            result_lines.append(line)
+
+    return '\n'.join(result_lines)
+
+def copy_agent(agent_name: str, source_category: str, target_dir: Path, install_type: str = "cursor") -> bool:
+    """Copy a single agent from source to target directory, converting format if needed."""
     agents_dir = get_agents_directory()
     source_file = agents_dir / source_category / f"{agent_name}.mdc"
-    target_file = target_dir / f"{agent_name}.mdc"
 
     if not source_file.exists():
         print(f"⚠️  Warning: Agent {agent_name} not found in {source_category}")
         return False
 
     try:
-        shutil.copy2(source_file, target_file)
-        print(f"✅ Copied {agent_name}.mdc")
+        if install_type == "claude":
+            # Convert format for Claude Desktop
+            with open(source_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            converted_content = convert_mdc_to_claude_format(content)
+            target_file = target_dir / f"{agent_name}.md"
+
+            with open(target_file, 'w', encoding='utf-8') as f:
+                f.write(converted_content)
+
+            print(f"✅ Copied {agent_name}.md (converted for Claude Desktop)")
+        else:
+            # Standard copy for Cursor
+            target_file = target_dir / f"{agent_name}.mdc"
+            shutil.copy2(source_file, target_file)
+            print(f"✅ Copied {agent_name}.mdc")
+
         return True
     except Exception as e:
-        print(f"❌ Error copying {agent_name}.mdc: {e}")
+        extension = ".md" if install_type == "claude" else ".mdc"
+        print(f"❌ Error copying {agent_name}{extension}: {e}")
         return False
 
 def copy_documentation_files(target_dir: Path) -> dict:
@@ -180,7 +265,7 @@ def copy_documentation_files(target_dir: Path) -> dict:
 
     return results
 
-def install_agents(target_dir: Path, agent_list: List[str] = None, categories: List[str] = None) -> None:
+def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None) -> None:
     """Install specified agents or all agents to target directory."""
     available_agents = discover_agents()
 
@@ -188,10 +273,15 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
         print("❌ No agents found in the repository")
         return
 
-    # Always copy required documentation files first
-    print("📋 Copying required documentation files...")
-    doc_results = copy_documentation_files(target_dir)
-    docs_copied = sum(doc_results.values())
+    # Always copy required documentation files first (only for Cursor)
+    if install_type == "cursor":
+        print("📋 Copying required documentation files...")
+        doc_results = copy_documentation_files(target_dir)
+        docs_copied = sum(doc_results.values())
+    else:
+        print("📋 Installing for Claude Desktop (documentation files not needed)...")
+        doc_results = {}
+        docs_copied = 0
 
     copied_count = 0
     total_count = 0
@@ -203,7 +293,7 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
         for agent_name in agent_list:
             source_category = get_agent_location(agent_name, available_agents)
             if source_category:
-                if copy_agent(agent_name, source_category, target_dir):
+                if copy_agent(agent_name, source_category, target_dir, install_type):
                     copied_count += 1
                 total_count += 1
             else:
@@ -225,7 +315,7 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
 
             print(f"\n📂 Installing {category} agents:")
             for agent_name in available_agents[category]:
-                if copy_agent(agent_name, category, target_dir):
+                if copy_agent(agent_name, category, target_dir, install_type):
                     copied_count += 1
                 total_count += 1
 
@@ -237,7 +327,7 @@ def install_agents(target_dir: Path, agent_list: List[str] = None, categories: L
             if agents:
                 print(f"\n📂 Installing {category} agents:")
                 for agent_name in agents:
-                    if copy_agent(agent_name, category, target_dir):
+                    if copy_agent(agent_name, category, target_dir, install_type):
                         copied_count += 1
                     total_count += 1
 
@@ -321,18 +411,19 @@ def list_available_agents_in_categories():
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Install AI agents from the ecosystem repository to your .cursor/rules directory",
+        description="Install AI agents from the ecosystem repository to your IDE agent directory",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Install all agents
+  # Cursor installation (default)
   python install-agents.py ~/.cursor/rules --all
-
-  # Install specific categories
   python install-agents.py ~/.cursor/rules --category coordination core-technical
+  python install-agents.py ~/.cursor/rules --agents strategic-task-planner backend-architect
 
-  # Install specific agents (by name)
-  python install-agents.py ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist backend-architect
+  # Claude Desktop installation (with --claude flag)
+  python install-agents.py ~/.claude/agents --claude --all
+  python install-agents.py ~/.claude/agents --claude --category coordination
+  python install-agents.py ~/.claude/agents --claude --agents strategic-task-planner ai-ml-specialist
 
   # List available options
   python install-agents.py --list-categories
@@ -342,7 +433,7 @@ Examples:
     )
 
     parser.add_argument('target_dir', nargs='?',
-                       help='Target .cursor/rules directory path')
+                       help='Target directory path (.cursor/rules for Cursor or .claude/agents for Claude Desktop)')
 
     parser.add_argument('--all', action='store_true',
                        help='Install all available agents')
@@ -352,6 +443,9 @@ Examples:
 
     parser.add_argument('--agents', '--agent', nargs='+',
                        help='Install specific agents by name')
+
+    parser.add_argument('--claude', action='store_true',
+                       help='Install for Claude Desktop (.md format with model field)')
 
     parser.add_argument('--list-categories', action='store_true',
                        help='List all available agent categories with descriptions')
@@ -409,23 +503,28 @@ Examples:
                     print(f"  • {cat}")
                 sys.exit(1)
 
-    # Validate target directory
-    target_dir = validate_target_directory(args.target_dir)
+    # Determine installation type based on flag
+    install_type = "claude" if args.claude else "cursor"
+
+    # Validate target directory with installation type context
+    target_dir = validate_target_directory(args.target_dir, args.claude)
 
     if args.dry_run:
         print("🔍 DRY RUN MODE - No files will be copied\n")
 
+    install_type_name = "Claude Desktop" if install_type == "claude" else "Cursor"
     print(f"🎯 AI Agent Ecosystem Installer")
-    print(f"📁 Target: {target_dir}\n")
+    print(f"📁 Target: {target_dir}")
+    print(f"🔧 Type: {install_type_name} Installation\n")
 
     # Perform installation
     if not args.dry_run:
         if args.all:
-            install_agents(target_dir)
+            install_agents(target_dir, install_type)
         elif args.category:
-            install_agents(target_dir, categories=args.category)
+            install_agents(target_dir, install_type, categories=args.category)
         elif args.agents:
-            install_agents(target_dir, agent_list=args.agents)
+            install_agents(target_dir, install_type, agent_list=args.agents)
     else:
         print("📋 Would install agents based on your selection")
         if args.agents:

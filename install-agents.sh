@@ -1,10 +1,15 @@
 #!/bin/bash
 # AI Agent Ecosystem Installer - Shell Script Version
 #
-# Shell script to copy agents and required documentation files from the repository
-# to .cursor/rules directory. Dynamically discovers available agents and categories.
+# Shell script to copy agents from the repository to your IDE's agent directory.
+# Supports both Cursor and Claude Desktop installations. Dynamically discovers
+# available agents and categories.
 #
-# Required Documentation Files:
+# Supports:
+# - Cursor (.cursor/rules directory, .mdc format with documentation files)
+# - Claude Desktop (.claude/agents directory, .md format with model field)
+#
+# Documentation Files (Cursor only):
 # - AGENT_HIERARCHY.md (agent coordination hierarchy)
 # - WORKSPACE_PROTOCOLS.md (workspace management standards)
 # - TEAM_COLLABORATION_CULTURE.md (communication guidelines)
@@ -12,10 +17,13 @@
 # - agent-coordination-guide.md (coordination methodologies)
 #
 # Usage:
-#   ./install-agents.sh <target_directory> [options]
-#   ./install-agents.sh ~/.cursor/rules
-#   ./install-agents.sh ~/.cursor/rules --category coordination core-technical
-#   ./install-agents.sh ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist
+#   # Cursor installation (default)
+#   ./install-agents.sh ~/.cursor/rules --all
+#   ./install-agents.sh ~/.cursor/rules --category coordination
+#
+#   # Claude Desktop installation
+#   ./install-agents.sh ~/.claude/agents --claude --all
+#   ./install-agents.sh ~/.claude/agents --claude --agents strategic-task-planner
 
 set -e  # Exit on any error
 
@@ -36,12 +44,13 @@ usage() {
     echo "Usage: $0 <target_directory> [options]"
     echo ""
     echo "Arguments:"
-    echo "  target_directory      Path to your .cursor/rules directory"
+    echo "  target_directory      Path to your agent directory"
     echo ""
     echo "Options:"
     echo "  --all                Install all available agents"
     echo "  --category CAT...    Install agents from specific categories"
     echo "  --agents AGENT...    Install specific agents by name"
+    echo "  --claude             Install for Claude Desktop (.md format with model field)"
     echo "  --list-categories    List all available categories"
     echo "  --list-agents        List all available agents"
     echo "  --list-by-category   List agents organized by category"
@@ -49,9 +58,17 @@ usage() {
     echo "  --help              Show this help message"
     echo ""
     echo "Examples:"
+    echo "  # Cursor installation (default)"
     echo "  $0 ~/.cursor/rules --all"
     echo "  $0 ~/.cursor/rules --category coordination core-technical"
     echo "  $0 ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist"
+    echo ""
+    echo "  # Claude Desktop installation"
+    echo "  $0 ~/.claude/agents --claude --all"
+    echo "  $0 ~/.claude/agents --claude --category coordination"
+    echo "  $0 ~/.claude/agents --claude --agents strategic-task-planner"
+    echo ""
+    echo "  # List options"
     echo "  $0 --list-categories"
     echo ""
 }
@@ -152,29 +169,56 @@ get_category_description() {
 
 validate_target_directory() {
     local target_dir="$1"
+    local is_claude="${2:-false}"
 
     # Expand tilde and resolve path
     target_dir="${target_dir/#\~/$HOME}"
     target_dir="$(realpath -m "$target_dir")"
 
-    # Check if path ends with .cursor/rules
-    if [[ ! "$target_dir" =~ \.cursor/rules/?$ ]]; then
-        echo -e "${YELLOW}⚠️  Warning: Target path doesn't end with '.cursor/rules'${NC}"
-        echo -e "${CYAN}📁 Current path: $target_dir${NC}"
-        echo ""
-        echo "What would you like to do?"
+    # Determine expected structure based on installation type
+    local expected_agent_dir="rules"
+    local expected_parent_dir=".cursor"
+    local install_type_name="Cursor"
 
-        # Smart suggestion based on current path
-        if [[ "$target_dir" =~ \.cursor/?$ ]]; then
-            suggested_path="$target_dir/rules"
-            # Remove any trailing slash before adding rules
-            suggested_path="${target_dir%/}/rules"
-            echo "1. Append 'rules' to create: $suggested_path (Recommended)"
-        else
-            suggested_path="$target_dir/.cursor/rules"
-            echo "1. Append '.cursor/rules' to create: $suggested_path (Recommended)"
+    if [[ "$is_claude" == "true" ]]; then
+        expected_agent_dir="agents"
+        expected_parent_dir=".claude"
+        install_type_name="Claude Desktop"
+    fi
+
+    # Check if path already has the expected structure
+    if [[ "$(basename "$target_dir")" == "$expected_agent_dir" ]] && \
+       [[ "$(basename "$(dirname "$target_dir")")" == "$expected_parent_dir" ]]; then
+        # Path is already correct
+        if [[ ! -d "$target_dir" ]]; then
+            log_info "Creating target directory: $target_dir"
+            mkdir -p "$target_dir" || {
+                log_error "Failed to create target directory: $target_dir"
+                exit 1
+            }
         fi
 
+        # Check if directory is writable
+        if [[ ! -w "$target_dir" ]]; then
+            log_error "Target directory is not writable: $target_dir"
+            exit 1
+        fi
+
+        echo "$target_dir"
+        return 0
+    fi
+
+    # Path doesn't match expected patterns - provide suggestions
+    echo -e "${YELLOW}⚠️  Warning: Target path doesn't match expected $install_type_name structure${NC}"
+    echo -e "${CYAN}📁 Current path: $target_dir${NC}"
+    echo ""
+    echo "What would you like to do?"
+
+    # Smart suggestions based on current path and installation type
+    if [[ "$(basename "$target_dir")" == "$expected_parent_dir" ]]; then
+        # User provided ~/.cursor or ~/.claude - suggest adding the agent directory
+        local suggestion="$target_dir/$expected_agent_dir"
+        echo "1. Append '$expected_agent_dir' to create: $suggestion (Recommended)"
         echo "2. Use the given directory as-is"
         echo "3. Cancel installation"
         echo ""
@@ -185,7 +229,39 @@ validate_target_directory() {
 
             case "$choice" in
                 1)
-                    target_dir="$suggested_path"
+                    target_dir="$suggestion"
+                    echo -e "${GREEN}✅ Updated target path: $target_dir${NC}"
+                    break
+                    ;;
+                2)
+                    echo -e "${GREEN}✅ Using original path: $target_dir${NC}"
+                    break
+                    ;;
+                3)
+                    echo -e "${RED}❌ Installation cancelled by user${NC}"
+                    exit 0
+                    ;;
+                *)
+                    echo -e "${RED}❌ Invalid choice. Please enter 1, 2, or 3${NC}"
+                    ;;
+            esac
+        done
+        echo ""
+    else
+        # User provided some other path - suggest adding full structure
+        local full_suggestion="$target_dir/$expected_parent_dir/$expected_agent_dir"
+        echo "1. Append '$expected_parent_dir/$expected_agent_dir' to create: $full_suggestion (Recommended)"
+        echo "2. Use the given directory as-is"
+        echo "3. Cancel installation"
+        echo ""
+
+        while true; do
+            echo -n "Enter your choice (1/2/3): "
+            read -r choice
+
+            case "$choice" in
+                1)
+                    target_dir="$full_suggestion"
                     echo -e "${GREEN}✅ Updated target path: $target_dir${NC}"
                     break
                     ;;
@@ -223,25 +299,75 @@ validate_target_directory() {
     echo "$target_dir"
 }
 
+convert_mdc_to_claude_format() {
+    local source_file="$1"
+    local temp_file=$(mktemp)
+
+    local in_frontmatter=false
+    local frontmatter_ended=false
+
+    while IFS= read -r line; do
+        if [[ "$line" == "---" ]] && [[ "$frontmatter_ended" == false ]]; then
+            if [[ "$in_frontmatter" == false ]]; then
+                in_frontmatter=true
+                echo "$line" >> "$temp_file"
+            else
+                # End of frontmatter - add model field before closing
+                echo "model: sonnet" >> "$temp_file"
+                echo "$line" >> "$temp_file"
+                frontmatter_ended=true
+            fi
+        elif [[ "$in_frontmatter" == true ]] && [[ "$frontmatter_ended" == false ]]; then
+            # Skip globs and alwaysApply fields
+            if [[ ! "$line" =~ ^[[:space:]]*(globs:|alwaysApply:) ]]; then
+                echo "$line" >> "$temp_file"
+            fi
+        else
+            echo "$line" >> "$temp_file"
+        fi
+    done < "$source_file"
+
+    echo "$temp_file"
+}
+
 copy_agent() {
     local agent_name="$1"
     local source_category="$2"
     local target_dir="$3"
+    local install_type="${4:-cursor}"
     local category_dir="$AGENTS_DIR/$source_category"
     local source_file="$category_dir/$agent_name.mdc"
-    local target_file="$target_dir/$agent_name.mdc"
 
     if [[ ! -f "$source_file" ]]; then
         log_warning "Agent $agent_name not found in $source_category"
         return 1
     fi
 
-    if cp "$source_file" "$target_file"; then
-        log_success "Copied $agent_name.mdc"
-        return 0
+    if [[ "$install_type" == "claude" ]]; then
+        # Convert format for Claude Desktop
+        local converted_file
+        converted_file=$(convert_mdc_to_claude_format "$source_file")
+        local target_file="$target_dir/$agent_name.md"
+
+        if cp "$converted_file" "$target_file"; then
+            log_success "Copied $agent_name.md (converted for Claude Desktop)"
+            rm -f "$converted_file"  # Clean up temp file
+            return 0
+        else
+            log_error "Failed to copy $agent_name.md"
+            rm -f "$converted_file"  # Clean up temp file
+            return 1
+        fi
     else
-        log_error "Failed to copy $agent_name.mdc"
-        return 1
+        # Standard copy for Cursor
+        local target_file="$target_dir/$agent_name.mdc"
+        if cp "$source_file" "$target_file"; then
+            log_success "Copied $agent_name.mdc"
+            return 0
+        else
+            log_error "Failed to copy $agent_name.mdc"
+            return 1
+        fi
     fi
 }
 
@@ -281,20 +407,26 @@ copy_documentation_files() {
 
 install_agents() {
     local target_dir="$1"
-    local mode="$2"
-    shift 2
+    local install_type="$2"
+    local mode="$3"
+    shift 3
     local items=("$@")
     local total_copied=0
     local total_agents=0
     local hierarchy_copied=false
 
-    # Always copy required documentation files first
-    log_info "Copying required documentation files..."
-    local docs_copied
-    docs_copied=$(copy_documentation_files "$target_dir")
-    local hierarchy_copied=false
-    if [[ -f "$target_dir/AGENT_HIERARCHY.md" ]]; then
-        hierarchy_copied=true
+    # Copy required documentation files first (only for Cursor)
+    if [[ "$install_type" == "cursor" ]]; then
+        log_info "Copying required documentation files..."
+        local docs_copied
+        docs_copied=$(copy_documentation_files "$target_dir")
+        local hierarchy_copied=false
+        if [[ -f "$target_dir/AGENT_HIERARCHY.md" ]]; then
+            hierarchy_copied=true
+        fi
+    else
+        log_info "Installing for Claude Desktop (documentation files not needed)..."
+        local docs_copied=0
     fi
 
     case "$mode" in
@@ -312,7 +444,7 @@ install_agents() {
                     log_info "Installing $category agents:"
 
                     for agent in "${agents[@]}"; do
-                        if copy_agent "$agent" "$category" "$target_dir"; then
+                        if copy_agent "$agent" "$category" "$target_dir" "$install_type"; then
                             ((total_copied++))
                         fi
                         ((total_agents++))
@@ -337,7 +469,7 @@ install_agents() {
                 log_info "Installing $category agents:"
 
                 for agent in "${agents[@]}"; do
-                    if copy_agent "$agent" "$category" "$target_dir"; then
+                    if copy_agent "$agent" "$category" "$target_dir" "$install_type"; then
                         ((total_copied++))
                     fi
                     ((total_agents++))
@@ -351,7 +483,7 @@ install_agents() {
             for agent_name in "${items[@]}"; do
                 local category
                 if category=$(find_agent_category "$agent_name"); then
-                    if copy_agent "$agent_name" "$category" "$target_dir"; then
+                    if copy_agent "$agent_name" "$category" "$target_dir" "$install_type"; then
                         ((total_copied++))
                     fi
                 else
@@ -488,6 +620,7 @@ main() {
     local mode=""
     local items=()
     local dry_run=false
+    local claude=false
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -529,6 +662,10 @@ main() {
                 check_prerequisites
                 list_by_category
                 exit 0
+                ;;
+            --claude)
+                claude=true
+                shift
                 ;;
             --dry-run)
                 dry_run=true
@@ -574,7 +711,19 @@ main() {
         exit 1
     fi
 
+    # Determine installation type
+    local install_type="cursor"
+    if [[ "$claude" == true ]]; then
+        install_type="claude"
+    fi
+
+    local install_type_name="Cursor"
+    if [[ "$install_type" == "claude" ]]; then
+        install_type_name="Claude Desktop"
+    fi
+
     echo "🎯 AI Agent Ecosystem Installer"
+    echo "🔧 Type: $install_type_name Installation"
     echo ""
 
     # Validate prerequisites
@@ -597,7 +746,7 @@ main() {
     fi
 
     # Validate and prepare target directory
-    target_dir=$(validate_target_directory "$target_dir")
+    target_dir=$(validate_target_directory "$target_dir" "$claude")
     log_success "Target directory ready: $target_dir"
     echo ""
 
@@ -608,7 +757,7 @@ main() {
 
     # Install agents
     if [[ "$dry_run" == false ]]; then
-        install_agents "$target_dir" "$mode" "${items[@]}"
+        install_agents "$target_dir" "$install_type" "$mode" "${items[@]}"
     else
         echo "📋 Would install agents based on your selection:"
         case "$mode" in
