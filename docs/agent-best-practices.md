@@ -16,47 +16,36 @@ Every agent must include:
 
 ### **✅ Frontmatter Standards**
 
-Use one of these four standard patterns:
+Our ecosystem uses **two standardized patterns** for optimal discoverability and coordination:
 
-#### **Always Applied (Coordination Agents)**
+#### **Always Applied (Primary Coordinator Only)**
 ```yaml
 ---
 name: agent-name
-description: "Brief description of when to apply this agent"
+description: Brief description of coordination role and escalation criteria
 globs:
 alwaysApply: true
 ---
 ```
+*Used for: strategic-task-planner only (universal entry point)*
 
-#### **Auto Attached (Technical Specialists)**
+#### **Agent Requested (All Specialist Agents)**
 ```yaml
 ---
 name: agent-name
-description:
-globs: *.py,*.js,*.ts,specific/**/*
-alwaysApply: false
----
-```
-
-#### **Agent Requested (Strategic/Analysis Agents)**
-```yaml
----
-name: agent-name
-description: USE WHEN [specific trigger conditions and scenarios]
+description: Clear description of expertise and when to apply this agent
 globs:
 alwaysApply: false
 ---
 ```
+*Used for: All technical, business, UX, security, data, and specialized domain agents*
 
-#### **Manual Only (Rarely Used)**
-```yaml
----
-name: agent-name
-description:
-globs:
-alwaysApply: false
----
-```
+**Key Ecosystem Design Decisions:**
+- **Single Entry Point**: Only strategic-task-planner is always applied, serving as the universal coordinator
+- **Specialist Coordination**: Other coordination agents (leverage-ai-agents, auto-agent-generator, product-manager, web-server-pm) are discoverable but not always applied
+- **Full Discoverability**: All agents have meaningful descriptions for coordination and user discovery
+- **No Auto-Attachment**: Empty globs prevent file-based auto-attachment, allowing intentional persona switching
+- **Clear Escalation**: Strategic-task-planner escalates to specialist coordinators when needed
 
 ## 🏗️ Agent Structure Template
 
@@ -141,25 +130,25 @@ You [focus/specialize] on [core value proposition] while [maintaining standards/
 - Project management and orchestration
 - Agent coordination and workflow optimization
 - Strategic planning and task decomposition
-- **Pattern**: `alwaysApply: true`
+- **Pattern**: `alwaysApply: true` for strategic-task-planner only, `alwaysApply: false` for specialist coordinators
 
 ### **Core Technical Agents** (`core-technical/`)
 - Fundamental development capabilities
 - System architecture and design
 - Technology implementation
-- **Pattern**: Auto-attached with `globs` for relevant file types
+- **Pattern**: Agent-requested with clear capability descriptions
 
 ### **Data Intelligence Agents** (`data-intelligence/`)
 - Data processing and analysis
 - AI/ML implementation
 - Business intelligence
-- **Pattern**: Mix of auto-attached and agent-requested
+- **Pattern**: Agent-requested with expertise descriptions
 
 ### **Security Operations Agents** (`security-operations/`)
 - Production systems and reliability
 - Security implementation
 - Performance optimization
-- **Pattern**: Auto-attached for relevant files
+- **Pattern**: Agent-requested for intentional security focus
 
 ### **User Experience Agents** (`user-experience/`)
 - Design and user interaction
@@ -188,8 +177,8 @@ You [focus/specialize] on [core value proposition] while [maintaining standards/
 
 ### **Step 2: Choose Category and Type**
 - Determine appropriate directory
-- Select frontmatter pattern (Always/Auto/Requested/Manual)
-- Define glob patterns if auto-attached
+- Select frontmatter pattern (Always for coordination, Agent-requested for specialists)
+- Write clear description of expertise and application scenarios
 
 ### **Step 3: Use the Template**
 - Start with the structure template above
@@ -234,9 +223,9 @@ You [focus/specialize] on [core value proposition] while [maintaining standards/
 
 ## 📚 Reference Examples
 
-- **Coordination**: `strategic-task-planner.mdc`
-- **Auto-Attached**: `backend-architect.mdc`
-- **Agent-Requested**: `ai-ml-specialist.mdc`
-- **Platform Specialist**: `platform-engineer.mdc`
+- **Always Applied (Coordination)**: `strategic-task-planner.mdc`, `leverage-ai-agents.mdc`
+- **Agent-Requested (Technical)**: `backend-architect.mdc`, `frontend-ux-expert.mdc`
+- **Agent-Requested (Intelligence)**: `ai-ml-specialist.mdc`, `data-engineering-specialist.mdc`
+- **Agent-Requested (Platform)**: `platform-engineer.mdc`, `developer-experience-engineer.mdc`
 
 Use `@auto-agent-generator` to create new agents following these established patterns and ensure proper integration with the ecosystem.

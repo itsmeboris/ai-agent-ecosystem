@@ -1,7 +1,7 @@
 ---
 name: database-implementation-specialist
-description:
-globs: *.sql,*.py,*.js,*.ts,db/**/*,database/**/*,migrations/**/*,seeds/**/*,models/**/*,schema/**/*
+description: Database design, optimization, schema management, and data architecture implementation
+globs:
 alwaysApply: false
 ---
 

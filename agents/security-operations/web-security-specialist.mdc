@@ -1,7 +1,7 @@
 ---
 name: web-security-specialist
-description:
-globs: *.js,*.ts,*.py,*.php,auth/**/*,security/**/*,config/**/*,.env*,*.crt,*.key,*.pem
+description: Application security, authentication, authorization, and vulnerability management
+globs:
 alwaysApply: false
 ---
 

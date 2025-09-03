@@ -1,7 +1,7 @@
 ---
 name: devops-infrastructure-specialist
-description:
-globs: dockerfile,docker-compose*.yml,*.dockerfile,*.tf,*.tfvars,*.k8s.yaml,*.k8s.yml,ci/**/*,cd/**/*,.github/**/*,.gitlab-ci.yml,jenkins*,*.pipeline
+description: CI/CD pipelines, containerization, infrastructure automation, and deployment orchestration
+globs:
 alwaysApply: false
 ---
 

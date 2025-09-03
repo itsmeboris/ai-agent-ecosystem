@@ -1,6 +1,6 @@
 ---
 name: strategic-task-planner
-description: "Primary coordination agent for project planning and task decomposition. Apply for most coordination needs - breaks down complex projects into manageable phases, selects appropriate specialist agents, and manages sequential workflows. Escalates to leverage-ai-agents only for projects requiring 4+ agents or parallel coordination."
+description: Primary coordination agent for project planning and task decomposition. Apply for most coordination needs - breaks down complex projects into manageable phases, selects appropriate specialist agents, and manages sequential workflows. Escalates to leverage-ai-agents only for projects requiring 4+ agents or parallel coordination.
 globs:
 alwaysApply: true
 ---

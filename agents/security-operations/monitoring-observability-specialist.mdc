@@ -1,7 +1,7 @@
 ---
 name: monitoring-observability-specialist
-description:
-globs: *.yml,*.yaml,*.json,*.toml,prometheus/**/*,grafana/**/*,monitoring/**/*,observability/**/*,logs/**/*,metrics/**/*,alerts/**/*
+description: System monitoring, observability implementation, metrics collection, and alerting systems
+globs:
 alwaysApply: false
 ---
 

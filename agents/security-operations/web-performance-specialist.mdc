@@ -1,7 +1,7 @@
 ---
 name: web-performance-specialist
-description:
-globs: *.html,*.css,*.js,*.ts,*.jpg,*.png,*.webp,*.svg,webpack*,vite*,public/**/*,assets/**/*,*.config.js
+description: Web performance optimization, asset optimization, and loading speed enhancement
+globs:
 alwaysApply: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: api-design-specialist
-description:
-globs: api/**/*,routes/**/*,controllers/**/*,**/api/**/*,*.swagger.yml,*.swagger.yaml,openapi.yml,openapi.yaml,**/openapi/**/*
+description: REST/GraphQL/gRPC API design, documentation, and implementation
+globs:
 alwaysApply: false
 ---
 

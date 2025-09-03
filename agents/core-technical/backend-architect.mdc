@@ -1,7 +1,7 @@
 ---
 name: backend-architect
-description:
-globs: *.py,*.js,*.ts,*.go,*.java,*.rs,api/**/*,server/**/*,backend/**/*,microservices/**/*,docker*,*.yml,*.yaml
+description: Server-side development, API design, database integration, and backend architecture implementation
+globs:
 alwaysApply: false
 ---
 

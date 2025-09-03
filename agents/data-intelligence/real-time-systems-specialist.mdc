@@ -1,7 +1,7 @@
 ---
 name: real-time-systems-specialist
-description:
-globs: *.py,*.js,*.ts,*.go,*.rs,*.c,*.cpp,stream/**/*,realtime/**/*,concurrent/**/*,kafka/**/*,redis/**/*,websocket/**/*
+description: High-performance systems, concurrent processing, streaming data, and real-time optimization
+globs:
 alwaysApply: false
 ---
 

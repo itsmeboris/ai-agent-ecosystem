@@ -1,7 +1,7 @@
 ---
 name: integration-specialist
-description:
-globs: *.json,*.xml,*.yaml,*.yml,*.py,*.js,*.ts,integrations/**/*,webhooks/**/*,middleware/**/*,etl/**/*,*.env
+description: System integration, API connectivity, middleware implementation, and data synchronization
+globs:
 alwaysApply: false
 ---
 

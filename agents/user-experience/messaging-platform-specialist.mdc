@@ -1,7 +1,7 @@
 ---
 name: messaging-platform-specialist
-description:
-globs: *.js,*.ts,*.py,bot/**/*,messaging/**/*,chat/**/*,webhook/**/*,telegram/**/*,discord/**/*,slack/**/*,*.bot.json
+description: Conversational interfaces, messaging integration, chatbot development, and communication platforms
+globs:
 alwaysApply: false
 ---
 

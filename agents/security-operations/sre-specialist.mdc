@@ -1,7 +1,7 @@
 ---
 name: sre-specialist
-description:
-globs: *.yml,*.yaml,*.tf,*.py,*.sh,sre/**/*,monitoring/**/*,alerts/**/*,runbooks/**/*,incident/**/*,reliability/**/*,ops/**/*
+description: Site reliability engineering, production systems optimization, and operational excellence
+globs:
 alwaysApply: false
 ---
 

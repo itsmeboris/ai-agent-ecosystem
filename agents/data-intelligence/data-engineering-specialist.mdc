@@ -1,7 +1,7 @@
 ---
 name: data-engineering-specialist
-description:
-globs: *.py,*.sql,*.scala,*.jar,etl/**/*,data/**/*,pipelines/**/*,airflow/**/*,kafka/**/*,spark/**/*,*.parquet,*.avro
+description: Data pipeline design, ETL/ELT processes, and large-scale data processing workflows
+globs:
 alwaysApply: false
 ---
 

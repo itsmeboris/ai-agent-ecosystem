@@ -1,7 +1,7 @@
 ---
 name: frontend-ux-expert
-description:
-globs: *.html,*.css,*.js,*.jsx,*.ts,*.tsx,*.vue,*.svelte,src/**/*,public/**/*,assets/**/*,styles/**/*,components/**/*
+description: Frontend development, user interface implementation, and user experience optimization
+globs:
 alwaysApply: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: mobile-development-specialist
-description:
-globs: *.swift,*.kt,*.dart,*.m,*.mm,ios/**/*,android/**/*,mobile/**/*,*.podspec,pubspec.yaml,package.json
+description: iOS/Android native and cross-platform mobile application development
+globs:
 alwaysApply: false
 ---
 
