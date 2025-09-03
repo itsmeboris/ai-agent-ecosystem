@@ -8,6 +8,7 @@
 - **leverage-ai-agents**: Meta-coordinator for complex multi-agent orchestration (4+ agents, parallel workflows)
 - **auto-agent-generator**: Dynamic agent creation and ecosystem expansion specialist
 - **web-server-pm**: Project management for web server development initiatives
+- **product-manager**: Product strategy, roadmap planning, and stakeholder management
 
 ### Core Technical Foundation
 
@@ -22,6 +23,7 @@
 - **mobile-development-specialist**: iOS/Android native and cross-platform development
 - **cloud-architecture-specialist**: AWS/Azure/GCP cloud-native architecture and optimization
 - **api-design-specialist**: REST/GraphQL/gRPC API design and implementation
+- **prompt-engineer**: LLM optimization, prompt design, and AI workflow implementation
 
 ### Data & Intelligence Systems
 
@@ -31,6 +33,7 @@
 - **data-science-specialist**: Business intelligence and statistical analysis
 - **real-time-systems-specialist**: Performance optimization and concurrent processing
 - **integration-specialist**: System integration, ETL/ELT, and API connectivity
+- **ai-ethics-governance-specialist**: Responsible AI development and compliance frameworks
 
 ### User Experience & Communication
 
@@ -40,6 +43,7 @@
 - **content-management-specialist**: Digital content organization and workflow management
 - **accessibility-specialist**: WCAG compliance and inclusive design implementation
 - **technical-writing-specialist**: API docs, user guides, and technical documentation
+- **developer-relations-engineer**: Developer community building and external engagement
 
 ### Security & Operations
 
@@ -53,6 +57,8 @@
 
 ### Business & Marketing
 
+- **business-analyst**: Requirements analysis and stakeholder management
+- **solutions-engineer**: Pre-sales technical support and customer solution design
 - **ecommerce-specialist**: E-commerce systems and payment processing
 - **seo-marketing-specialist**: Search optimization and digital marketing
 - **documentation-research-specialist**: Technical documentation and research

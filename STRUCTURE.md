@@ -14,14 +14,17 @@
 │   │   ├── WORKSPACE_PROTOCOLS.md
 │   │   ├── auto-agent-generator.mdc
 │   │   ├── leverage-ai-agents.mdc
+│   │   ├── product-manager.mdc
 │   │   ├── strategic-task-planner.mdc
 │   │   └── web-server-pm.mdc
 │   ├── business-marketing
+│   │   ├── business-analyst.mdc
 │   │   ├── cost-optimization-specialist.mdc
 │   │   ├── documentation-research-specialist.mdc
 │   │   ├── ecommerce-specialist.mdc
 │   │   ├── legal-compliance-specialist.mdc
 │   │   ├── seo-marketing-specialist.mdc
+│   │   ├── solutions-engineer.mdc
 │   │   └── web-search-specialist.mdc
 │   ├── core-technical
 │   │   ├── api-design-specialist.mdc
@@ -34,8 +37,10 @@
 │   │   ├── fullstack-dev-expert.mdc
 │   │   ├── mobile-development-specialist.mdc
 │   │   ├── platform-engineer.mdc
+│   │   ├── prompt-engineer.mdc
 │   │   └── system-architecture-designer.mdc
 │   ├── data-intelligence
+│   │   ├── ai-ethics-governance-specialist.mdc
 │   │   ├── ai-ml-specialist.mdc
 │   │   ├── data-engineering-specialist.mdc
 │   │   ├── data-science-specialist.mdc
@@ -56,6 +61,7 @@
 │   └── user-experience
 │       ├── accessibility-specialist.mdc
 │       ├── content-management-specialist.mdc
+│       ├── developer-relations-engineer.mdc
 │       ├── localization-specialist.mdc
 │       ├── messaging-platform-specialist.mdc
 │       ├── technical-writing-specialist.mdc
@@ -69,5 +75,5 @@
 ├── install-agents.py
 └── install-agents.sh
 
-10 directories, 55 files
+10 directories, 61 files
 ```
