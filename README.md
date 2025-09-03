@@ -4,7 +4,7 @@ A comprehensive collection of specialized AI agents designed to work together as
 
 ## 🎯 Overview
 
-This repository contains **39 professional AI agents** that collaborate to deliver exceptional results across any project type or industry. Each agent is a specialist in their domain, designed to work seamlessly with others through structured coordination protocols.
+This repository contains **42 professional AI agents** that collaborate to deliver exceptional results across any project type or industry. Each agent is a specialist in their domain, designed to work seamlessly with others through structured coordination protocols.
 
 ### **What Makes This Special**
 
@@ -16,27 +16,32 @@ This repository contains **39 professional AI agents** that collaborate to deliv
 
 ## 🏗️ Agent Architecture
 
-### **Coordination Layer** (3 Agents)
+### **Coordination Layer** (4 Agents)
 The orchestration brain of the ecosystem:
 - **`strategic-task-planner`**: Primary orchestrator for complex multi-step projects
 - **`leverage-ai-agents`**: Meta-coordinator for agent ecosystem optimization
 - **`auto-agent-generator`**: Dynamic agent creation and ecosystem expansion specialist
+- **`web-server-pm`**: Project management for web server development initiatives
 
-### **Core Technical Foundation** (8 Agents)
+### **Core Technical Foundation** (11 Agents)
 Essential building blocks for any technical project:
 - **`system-architecture-designer`**: High-level system design and architectural decisions
 - **`backend-architect`**: Server-side architecture and API design
 - **`database-implementation-specialist`**: Database design, optimization, and implementation
 - **`frontend-ux-expert`**: User interface development and experience optimization
+- **`platform-engineer`**: Internal developer platforms and golden path creation
+- **`developer-experience-engineer`**: Developer productivity and workflow optimization
 - **`code-reviewer`**: Code quality assurance and best practices enforcement
+- **`fullstack-dev-expert`**: Comprehensive full-stack development expertise
 - **`mobile-development-specialist`**: iOS/Android native and cross-platform development
 - **`cloud-architecture-specialist`**: AWS/Azure/GCP cloud-native architecture
 - **`api-design-specialist`**: REST/GraphQL/gRPC API design and implementation
 
-### **Data & Intelligence Systems** (5 Agents)
+### **Data & Intelligence Systems** (6 Agents)
 Transform data into intelligent features:
 - **`data-engineering-specialist`**: Data pipeline design and processing workflows
 - **`ai-ml-specialist`**: Machine learning model implementation and NLP systems
+- **`mlops-engineer`**: ML model deployment, monitoring, and production operations
 - **`data-science-specialist`**: Business intelligence and statistical analysis
 - **`real-time-systems-specialist`**: Performance optimization and concurrent processing
 - **`integration-specialist`**: System integration, ETL/ELT, and API connectivity
@@ -60,13 +65,11 @@ Ensure reliability and security:
 - **`sre-specialist`**: Site reliability engineering and incident response
 - **`monitoring-observability-specialist`**: Metrics, logging, and alerting
 
-### **Business & Marketing** (8 Agents)
+### **Business & Marketing** (6 Agents)
 Drive business success:
 - **`ecommerce-specialist`**: E-commerce systems and payment processing
 - **`seo-marketing-specialist`**: Search optimization and digital marketing
-- **`web-server-pm`**: Project management for web server development
 - **`documentation-research-specialist`**: Technical documentation and research
-- **`fullstack-dev-expert`**: Comprehensive full-stack development expertise
 - **`web-search-specialist`**: Web research and competitive intelligence specialist
 - **`legal-compliance-specialist`**: GDPR, CCPA, HIPAA compliance
 - **`cost-optimization-specialist`**: Cloud cost optimization and FinOps
@@ -98,6 +101,56 @@ Each specialist agent:
 - Follows structured workspace management protocols
 - Documents decisions and deliverables for seamless handoffs
 - Validates quality before passing work to the next agent
+
+## 🏛️ Agent Coordination Architecture
+
+Our agent coordination follows a sophisticated complexity-based delegation pattern that ensures optimal resource utilization and project success:
+
+```mermaid
+graph TD
+    A[User Request] --> B{Project Complexity Assessment}
+
+    B -->|Simple Projects<br/>1-3 Agents<br/>Sequential Workflow| C[Strategic Task Planner]
+    B -->|Complex Projects<br/>4+ Agents<br/>Parallel Workflows| D[Leverage AI Agents]
+
+    C --> E[Task Decomposition]
+    C --> F[Agent Selection]
+    C --> G[Sequential Coordination]
+
+    G -->|If Complexity Exceeds Threshold| H[Escalate to Leverage AI Agents]
+    H --> D
+
+    D --> I[Multi-Agent Orchestration]
+    D --> J[Parallel Stream Management]
+    D --> K[Performance Optimization]
+    D --> L[Complex Coordination Patterns]
+
+    subgraph "Simple Project Flow (80% of cases)"
+        C
+        E
+        F
+        G
+    end
+
+    subgraph "Complex Project Flow (20% of cases)"
+        D
+        I
+        J
+        K
+        L
+    end
+
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style C fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style D fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    style H fill:#fff3e0,stroke:#e65100,stroke-width:2px
+```
+
+This architecture ensures that:
+- **80% of projects** get efficient, streamlined coordination through the strategic-task-planner
+- **20% of complex projects** get sophisticated multi-agent orchestration
+- **Clear escalation paths** prevent coordination bottlenecks
+- **Proper delegation** maintains agent specialization boundaries
 
 ## 📋 Common Workflow Patterns
 
@@ -357,6 +410,6 @@ This AI Agent Ecosystem is designed for professional use across any industry or 
 
 ---
 
-**Transform how you approach complex challenges. Instead of working alone, work with a team of 39 specialized professionals who never sleep, never forget, and always coordinate perfectly.**
+**Transform how you approach complex challenges. Instead of working alone, work with a team of 42 specialized professionals who never sleep, never forget, and always coordinate perfectly.**
 
 **Ready to get started? Begin with `@strategic-task-planner` and watch your project come together with professional precision.**

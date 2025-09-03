@@ -13,6 +13,8 @@ Get up and running with the AI Agent Ecosystem in minutes.
 3. **Restart Cursor**: Restart your IDE to load the new agents
 4. **Test**: Try `@strategic-task-planner: Hello` to verify the agents are working
 
+*Note: The installer now includes smart path validation to ensure proper `.cursor/rules` setup*
+
 ### **Alternative: Manual Installation**
 If you prefer manual setup:
 1. Copy all `.mdc` files from `agents/` subdirectories to your `.cursor/rules/` directory
@@ -174,6 +176,10 @@ Speed up development with parallel work streams:
 ### **Understand Each Agent**
 - Browse the `agents/` directory to understand each specialist's capabilities
 - Read agent descriptions to know when to use each one
+
+### **Creating New Agents**
+- [`agent-best-practices.md`](agent-best-practices.md) - Complete guide for creating new agents
+- Use `@auto-agent-generator` to create new agents following established patterns
 
 ## 🎯 Success Formula
 

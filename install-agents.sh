@@ -1,7 +1,7 @@
 #!/bin/bash
 # AI Agent Ecosystem Installer - Shell Script Version
 #
-# Shell script to copy agents and required documentation files from the repository 
+# Shell script to copy agents and required documentation files from the repository
 # to .cursor/rules directory. Dynamically discovers available agents and categories.
 #
 # Required Documentation Files:
@@ -157,6 +157,54 @@ validate_target_directory() {
     target_dir="${target_dir/#\~/$HOME}"
     target_dir="$(realpath -m "$target_dir")"
 
+    # Check if path ends with .cursor/rules
+    if [[ ! "$target_dir" =~ \.cursor/rules/?$ ]]; then
+        echo -e "${YELLOW}⚠️  Warning: Target path doesn't end with '.cursor/rules'${NC}"
+        echo -e "${CYAN}📁 Current path: $target_dir${NC}"
+        echo ""
+        echo "What would you like to do?"
+
+        # Smart suggestion based on current path
+        if [[ "$target_dir" =~ \.cursor/?$ ]]; then
+            suggested_path="$target_dir/rules"
+            # Remove any trailing slash before adding rules
+            suggested_path="${target_dir%/}/rules"
+            echo "1. Append 'rules' to create: $suggested_path (Recommended)"
+        else
+            suggested_path="$target_dir/.cursor/rules"
+            echo "1. Append '.cursor/rules' to create: $suggested_path (Recommended)"
+        fi
+
+        echo "2. Use the given directory as-is"
+        echo "3. Cancel installation"
+        echo ""
+
+        while true; do
+            echo -n "Enter your choice (1/2/3): "
+            read -r choice
+
+            case "$choice" in
+                1)
+                    target_dir="$suggested_path"
+                    echo -e "${GREEN}✅ Updated target path: $target_dir${NC}"
+                    break
+                    ;;
+                2)
+                    echo -e "${GREEN}✅ Using original path: $target_dir${NC}"
+                    break
+                    ;;
+                3)
+                    echo -e "${RED}❌ Installation cancelled by user${NC}"
+                    exit 0
+                    ;;
+                *)
+                    echo -e "${RED}❌ Invalid choice. Please enter 1, 2, or 3${NC}"
+                    ;;
+            esac
+        done
+        echo ""
+    fi
+
     # Create directory if it doesn't exist
     if [[ ! -d "$target_dir" ]]; then
         log_info "Creating target directory: $target_dir"
@@ -201,7 +249,7 @@ copy_documentation_files() {
     local target_dir="$1"
     local docs_copied=0
     local total_docs=5
-    
+
     # Define required documentation files
     declare -A doc_files=(
         ["AGENT_HIERARCHY.md"]="$AGENTS_DIR/coordination/AGENT_HIERARCHY.md"
@@ -210,16 +258,16 @@ copy_documentation_files() {
         ["AGENT_DIRECTORY.md"]="$AGENTS_DIR/coordination/AGENT_DIRECTORY.md"
         ["agent-coordination-guide.md"]="$SCRIPT_DIR/docs/agent-coordination-guide.md"
     )
-    
+
     for filename in "${!doc_files[@]}"; do
         local source_file="${doc_files[$filename]}"
         local target_file="$target_dir/$filename"
-        
+
         if [[ ! -f "$source_file" ]]; then
             log_warning "$filename not found at $source_file"
             continue
         fi
-        
+
         if cp "$source_file" "$target_file"; then
             log_success "Copied $filename"
             ((docs_copied++))
@@ -227,7 +275,7 @@ copy_documentation_files() {
             log_error "Failed to copy $filename"
         fi
     done
-    
+
     echo "$docs_copied"
 }
 

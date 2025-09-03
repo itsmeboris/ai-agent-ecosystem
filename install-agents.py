@@ -79,8 +79,47 @@ def get_category_description(category: str) -> str:
     return category.replace('-', ' ').title()
 
 def validate_target_directory(target_path: str) -> Path:
-    """Validate and create target directory if needed."""
+    """Validate and create target directory if needed, ensuring proper .cursor/rules structure."""
     target = Path(target_path).expanduser().resolve()
+
+    # Check if path ends with .cursor/rules
+    if not (target.name == "rules" and target.parent.name == ".cursor"):
+        print(f"⚠️  Warning: Target path doesn't end with '.cursor/rules'")
+        print(f"📁 Current path: {target}")
+        print()
+        print("What would you like to do?")
+
+        # Smart suggestion based on current path
+        if target.name == ".cursor":
+            suggestion = target / "rules"
+            print(f"1. Append 'rules' to create: {suggestion} (Recommended)")
+        else:
+            suggestion = target / ".cursor" / "rules"
+            print(f"1. Append '.cursor/rules' to create: {suggestion} (Recommended)")
+
+        print("2. Use the given directory as-is")
+        print("3. Cancel installation")
+        print()
+
+        while True:
+            try:
+                choice = input("Enter your choice (1/2/3): ").strip()
+                if choice == "1":
+                    target = suggestion
+                    print(f"✅ Updated target path: {target}")
+                    break
+                elif choice == "2":
+                    print(f"✅ Using original path: {target}")
+                    break
+                elif choice == "3":
+                    print("❌ Installation cancelled by user")
+                    sys.exit(0)
+                else:
+                    print("❌ Invalid choice. Please enter 1, 2, or 3")
+            except (EOFError, KeyboardInterrupt):
+                print("\n❌ Installation cancelled by user")
+                sys.exit(0)
+        print()
 
     try:
         target.mkdir(parents=True, exist_ok=True)
