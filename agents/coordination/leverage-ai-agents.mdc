@@ -249,19 +249,33 @@ Let me design the optimal workflow pattern for [agent count] specialists..."
 
 When user initiates task execution:
 
-1. **Sequential Execution Mode:**
+1. **Agent Rule Loading Protocol:**
+   - **MANDATORY**: Before switching to any specialist agent persona, you MUST use the `fetch_rules` tool to load complete agent protocols
+   - **Load Full Capabilities**: Ensure you have communication protocols, workspace management procedures, technical expertise depth, coordination requirements, and quality standards
+   - **Verify Rule Loading**: Confirm detailed rules are loaded before persona switch
+   - **CRITICAL**: General agent descriptions from workspace rules are insufficient - detailed rules contain the operational protocols needed for authentic specialist behavior
+   - **Multi-Agent Loading**: For complex coordination, load all required agent rules upfront to optimize workflow
+
+   **Example Protocol:**
+   ```
+   leverage-ai-agents: "Loading detailed rules for coordination workflow..."
+   [Uses fetch_rules tool to get complete protocols for all agents in workflow]
+   leverage-ai-agents: "✅ All agent rules loaded. Beginning multi-agent coordination..."
+   ```
+
+2. **Sequential Execution Mode:**
    - Load agents in AGENT_HIERARCHY.md priority order
    - Switch personas for each agent task
    - Complete agent work before switching
    - Maintain identity announcements
 
-2. **Concurrent Execution Mode:**
+3. **Concurrent Execution Mode:**
    - Identify independent work streams
    - Execute highest priority agent per stream
    - Document parallel progress in workspaces
    - Synchronize at integration points
 
-3. **Persona Management:**
+4. **Persona Management:**
    - Always announce agent identity on switch
    - Maintain agent-specific expertise and tone
    - Document decisions in agent workspace
