@@ -1,6 +1,185 @@
 # Agent Directory
 
-## Available Specialist Agents
+## 📖 Purpose
+
+**Use this directory to:**
+- **Discover agents** by expertise area when planning projects
+- **Find the right specialist** for specific technical challenges
+- **Understand collaboration patterns** between agents
+- **Plan workflows** by identifying required agents and their dependencies
+- **Quick reference** when you need "Who handles X?" answers
+
+**When to use this:**
+- Starting a new project and need to select the right agent team
+- Current agent suggests consulting another specialist
+- Looking for an agent with specific domain expertise
+- Planning complex multi-agent workflows
+
+---
+
+## 🔍 How to Find the Right Agent
+
+### Quick Selection Guide
+
+```mermaid
+graph TD
+    A[What do you need?] --> B{Problem Type}
+    B -->|Plan/Coordinate| C[Orchestration Layer]
+    B -->|Build System| D[Core Technical]
+    B -->|Work with Data/AI| E[Data & Intelligence]
+    B -->|Design Interface| F[User Experience]
+    B -->|Security/Deploy| G[Security & Operations]
+    B -->|Business/Market| H[Business & Marketing]
+    B -->|Specialized| I[Industry Domains]
+
+    C --> C1[strategic-task-planner<br/>leverage-ai-agents<br/>product-manager]
+    D --> D1[backend-architect<br/>frontend-ux-expert<br/>system-architecture-designer]
+    E --> E1[ai-ml-specialist<br/>data-engineering-specialist<br/>data-science-specialist]
+    F --> F1[ui-ux-designer<br/>accessibility-specialist<br/>localization-specialist]
+    G --> G1[web-security-specialist<br/>devops-infrastructure-specialist<br/>sre-specialist]
+    H --> H1[business-analyst<br/>seo-marketing-specialist<br/>cost-optimization-specialist]
+    I --> I1[art-gallery-specialist<br/>image-ai-specialist]
+```
+
+### By Common Need
+
+| I Need To... | Start With Agent |
+|--------------|------------------|
+| Plan a complex project | `strategic-task-planner` |
+| Coordinate 4+ agents | `leverage-ai-agents` |
+| Design system architecture | `system-architecture-designer` |
+| Build an API | `backend-architect` + `api-design-specialist` |
+| Create user interface | `ui-ux-designer` → `frontend-ux-expert` |
+| Implement AI/ML features | `ai-ml-specialist` |
+| Optimize performance | `web-performance-specialist` |
+| Secure application | `web-security-specialist` |
+| Deploy to production | `devops-infrastructure-specialist` |
+| Analyze data | `data-science-specialist` |
+| Market research | `web-search-specialist` |
+| Ensure accessibility | `accessibility-specialist` |
+
+---
+
+## 💡 Usage Examples
+
+### Example 1: E-Commerce Platform Project
+
+**Goal**: Build full-featured e-commerce platform
+
+**Agent Selection Process**:
+1. **Check Business & Marketing** → Found `ecommerce-specialist` ✓
+2. **Check Core Technical** → Found `backend-architect`, `frontend-ux-expert` ✓
+3. **Check Data Intelligence** → Found `ai-ml-specialist` (for recommendations) ✓
+4. **Check Security & Operations** → Found `web-security-specialist`, `devops-infrastructure-specialist` ✓
+
+**Recommended Workflow**:
+```
+strategic-task-planner (planning)
+  ↓
+system-architecture-designer (architecture)
+  ↓
+[Parallel Streams]
+  Stream A: backend-architect + ecommerce-specialist + database-implementation-specialist
+  Stream B: ai-ml-specialist + data-engineering-specialist (recommendation engine)
+  Stream C: ui-ux-designer + frontend-ux-expert
+  ↓
+web-security-specialist (security review)
+  ↓
+devops-infrastructure-specialist (deployment)
+```
+
+### Example 2: AI-Powered Analytics Dashboard
+
+**Goal**: Real-time analytics dashboard with ML predictions
+
+**Agent Selection Process**:
+1. **Check Data Intelligence** → Found `data-engineering-specialist`, `ai-ml-specialist`, `data-science-specialist` ✓
+2. **Check Core Technical** → Found `backend-architect`, `real-time-systems-specialist` ✓
+3. **Check User Experience** → Found `ui-ux-designer`, `frontend-ux-expert` ✓
+
+**Recommended Workflow**:
+```
+strategic-task-planner
+  ↓
+system-architecture-designer
+  ↓
+data-engineering-specialist (data pipelines)
+  ↓
+[Parallel]
+  - ai-ml-specialist + mlops-engineer (ML models)
+  - data-science-specialist (analytics)
+  - backend-architect + real-time-systems-specialist (API + real-time)
+  ↓
+ui-ux-designer → frontend-ux-expert (dashboard UI)
+  ↓
+web-performance-specialist (optimization)
+```
+
+### Example 3: Global SaaS Application
+
+**Goal**: Multi-tenant SaaS with international support
+
+**Agent Selection Process**:
+1. **Check Orchestration** → Found `product-manager`, `strategic-task-planner` ✓
+2. **Check Core Technical** → Found `cloud-architecture-specialist`, `backend-architect` ✓
+3. **Check User Experience** → Found `localization-specialist`, `accessibility-specialist` ✓
+4. **Check Security** → Found `web-security-specialist`, `legal-compliance-specialist` ✓
+
+**Recommended Workflow**:
+```
+product-manager + strategic-task-planner (strategy)
+  ↓
+system-architecture-designer + cloud-architecture-specialist (cloud-native design)
+  ↓
+[Parallel Streams]
+  Stream A: backend-architect + api-design-specialist + database-implementation-specialist
+  Stream B: ui-ux-designer + frontend-ux-expert + localization-specialist
+  Stream C: web-security-specialist + legal-compliance-specialist (GDPR/compliance)
+  ↓
+qa-reliability-engineer (testing)
+  ↓
+devops-infrastructure-specialist + sre-specialist (deployment + monitoring)
+```
+
+### Example 4: "I Don't Know Which Agent I Need"
+
+**Scenario**: Need to improve website loading speed
+
+**Step-by-Step**:
+1. Search this directory for "performance" → Found `web-performance-specialist` ✓
+2. Read description: "Performance optimization and Core Web Vitals"
+3. Check collaboration patterns → Often works with `frontend-ux-expert`, `backend-architect`
+4. **Decision**: Start with `@web-performance-specialist`
+5. Agent may consult others as needed
+
+**Scenario**: Need to add payment processing
+
+**Step-by-Step**:
+1. Check Business & Marketing category → Found `ecommerce-specialist` ✓
+2. Read description: "E-commerce systems and payment processing"
+3. Check collaboration patterns → Works with `backend-architect`, `web-security-specialist`
+4. **Decision**: Start with `@ecommerce-specialist` + consult `@web-security-specialist`
+
+---
+
+## ✅ Success Criteria
+
+**You've found the right agent(s) when:**
+- ✅ Agent's description clearly matches your problem domain
+- ✅ Agent has the specific technical expertise you need
+- ✅ You understand which agents come before/after (dependencies clear)
+- ✅ The collaboration pattern makes sense for your workflow
+- ✅ You can articulate why this agent vs another similar one
+
+**Red flags (wrong agent selected):**
+- ❌ Agent description is vague or doesn't match your need
+- ❌ You're forcing a fit ("maybe they can do this too...")
+- ❌ Multiple agents seem to overlap completely (check AGENT_HIERARCHY.md for clarity)
+- ❌ No clear handoff to/from this agent
+
+---
+
+## 📋 Available Specialist Agents
 
 ### Primary Orchestration Layer
 

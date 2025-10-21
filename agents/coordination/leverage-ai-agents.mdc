@@ -47,6 +47,22 @@ Let me design the optimal workflow pattern for [agent count] specialists..."
 - **Collaboration**: Consult with strategic-task-planner for project context and feedback
 - **Escalation**: Delegate back to strategic-task-planner for strategic decisions beyond coordination
 
+### Workspace Responsibilities
+
+**When Assigned a Task:**
+
+1. **Start**: Update `workspaces/SHARED_PROGRESS.md` with coordination task start
+2. **Execute**: Focus on creating coordination deliverables (workflow diagrams, protocols)
+3. **Complete**: Update `workspaces/SHARED_PROGRESS.md` with completion and orchestration outcomes
+
+### Streamlined File Creation
+**Create files ONLY for actual deliverables:**
+- Agent workflow diagrams and coordination protocols
+- Handoff specifications and performance metrics
+- Optimization strategies and knowledge transfer maps
+
+**Do NOT create:** PROGRESS.md, CONTEXT.md, or administrative tracking files
+
 ### Agent Coordination-Specific Workspace Artifacts
 
 - **Agent Workflow Diagrams**: Visual representations of agent interaction patterns and handoffs

@@ -2,6 +2,23 @@
 
 A comprehensive collection of specialized AI agents designed to work together as a coordinated team for solving complex, multi-domain challenges. This ecosystem provides professional-grade expertise across all aspects of software development, data processing, user experience, and business operations.
 
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Agent Architecture](#-agent-architecture)
+- [How It Works](#-how-it-works)
+- [Agent Coordination Architecture](#-agent-coordination-architecture)
+- [Common Workflow Patterns](#-common-workflow-patterns)
+- [Best Practices for Usage](#-best-practices-for-usage)
+- [Universal Application Examples](#-universal-application-examples)
+- [Installation & Setup](#-installation--setup)
+- [Advanced Usage](#-advanced-usage)
+- [Troubleshooting](#-troubleshooting)
+- [FAQ](#-faq)
+- [Support & Community](#-support--community)
+- [Contributing](#-contributing)
+- [License](#-license)
+
 ## 🎯 Overview
 
 This repository contains **48 professional AI agents** that collaborate to deliver exceptional results across any project type or industry. Each agent is a specialist in their domain, designed to work seamlessly with others through structured coordination protocols.
@@ -396,19 +413,323 @@ backend-architect: "Excellent, incorporating these security measures..."
 - **Research**: Any agent can consult `@web-search-specialist` for market data
 - **Design**: Frontend agents consult `@ui-ux-designer` for UX decisions
 
+## 🔧 Troubleshooting
+
+### Installation Issues
+
+#### Agent Not Recognized After Installation
+**Symptom**: Typing `@agent-name` doesn't trigger the agent
+
+**Solutions**:
+1. **Restart Cursor IDE** - Most common fix. Close and reopen Cursor completely
+2. **Verify Installation Path**:
+   ```bash
+   ls ~/.cursor/rules/*.mdc
+   # Should show all agent .mdc files
+   ```
+3. **Check File Permissions**:
+   ```bash
+   chmod 644 ~/.cursor/rules/*.mdc
+   ```
+4. **Validate .mdc Format** - Ensure frontmatter is valid YAML
+5. **Check Cursor Console** - Look for agent loading errors
+
+#### Files Not Copying During Installation
+**Symptom**: Installation script runs but files missing
+
+**Solutions**:
+1. Run with verbose output to see what's happening
+2. Check source directory exists and contains .mdc files
+3. Ensure write permissions on `.cursor/rules/` directory
+4. Try manual copy as fallback
+
+### Agent Usage Issues
+
+#### Multiple Agents Responding Simultaneously
+**Symptom**: Several agents try to handle the same request
+
+**Solutions**:
+1. **Use Specific Mentions**: Always use `@agent-name` for specific agent
+2. **Check alwaysApply Settings**: Some agents may have `alwaysApply: true`
+3. **Be Explicit**: Say "I want only @backend-architect to handle this"
+
+#### Agent Giving Generic Responses
+**Symptom**: Agent doesn't use specialized expertise
+
+**Solutions**:
+1. **Verify Agent Loaded**: Check response starts with correct identifier (e.g., "backend-architect:")
+2. **Provide Context**: Give agent more context about your specific needs
+3. **Review Agent Description**: Ensure task matches agent's specialization
+4. **Use Strategic Planner**: Let `@strategic-task-planner` select optimal agent
+
+#### Wrong Agent Selected for Task
+**Symptom**: Task assigned to inappropriate agent
+
+**Solutions**:
+1. **Start with Strategic Planner**: Always use `@strategic-task-planner` for complex tasks
+2. **Review Agent Directory**: Check agent capabilities in category READMEs
+3. **Ask for Recommendation**: Request agent selection advice before starting
+
+### Coordination Issues
+
+#### Agents Not Coordinating Properly
+**Symptom**: Handoffs between agents failing or incomplete
+
+**Solutions**:
+1. **Use Coordination Agents**: Engage `@strategic-task-planner` or `@leverage-ai-agents`
+2. **Check Workspace**: Verify agents are updating progress appropriately
+3. **Sequential Execution**: Ensure agents complete before next starts
+4. **Clear Dependencies**: Make task dependencies explicit
+
+#### Project Too Complex for One Session
+**Symptom**: Running out of context or hitting limits
+
+**Solutions**:
+1. **Break Into Phases**: Divide project into smaller, manageable phases
+2. **Document Progress**: Keep clear notes between sessions
+3. **Clear Handoff Points**: Define explicit stopping and starting points
+4. **Save Deliverables**: Ensure all work products saved to files
+
+### Performance Issues
+
+#### Slow Agent Responses
+**Symptom**: Agent taking long time to respond
+
+**Solutions**:
+1. **Simplify Request**: Break complex requests into smaller tasks
+2. **Reduce Context**: Clear irrelevant context from conversation
+3. **Sequential Not Parallel**: Work with one agent at a time
+4. **Check System Resources**: Verify Cursor IDE performance
+
+#### Too Many Agents Loaded
+**Symptom**: IDE performance degraded with all 48 agents
+
+**Solutions**:
+1. **Selective Installation**: Install only needed categories:
+   ```bash
+   python install-agents.py ~/.cursor/rules --category coordination core-technical
+   ```
+2. **Project-Specific Agents**: Install agents per project need
+3. **Unload Unused Agents**: Remove .mdc files for unused agents
+
+### Quality Issues
+
+#### Deliverables Don't Meet Expectations
+**Symptom**: Agent output not matching requirements
+
+**Solutions**:
+1. **Clarify Requirements**: Provide more detailed specifications
+2. **Use Quality Gates**: Engage `@code-reviewer` or `@qa-reliability-engineer`
+3. **Iterative Refinement**: Work through multiple refinement cycles
+4. **Show Examples**: Provide examples of expected output
+
+## ❓ FAQ
+
+### General Questions
+
+#### Q: Do I need to install all 48 agents?
+**A**: No! You can install:
+- **All agents**: `--all` flag (recommended for full capability)
+- **Specific categories**: `--category coordination core-technical`
+- **Individual agents**: `--agents strategic-task-planner backend-architect`
+
+Choose based on your project needs.
+
+#### Q: Which agent should I start with?
+**A**: 
+- **For any multi-step project**: Start with `@strategic-task-planner`
+- **For single, simple task**: Directly engage the specialist agent
+- **For complex coordination**: Use `@strategic-task-planner` → `@leverage-ai-agents`
+
+#### Q: Can I use these agents with existing codebases?
+**A**: Absolutely! Agents can:
+- Analyze existing code
+- Suggest improvements
+- Add new features
+- Refactor and modernize
+- Review code quality
+- Add tests and documentation
+
+#### Q: How do agents coordinate with each other?
+**A**: Through structured workspace protocols:
+- Agents update progress with status
+- Create deliverable files in shared workspace
+- Reference each other's work
+- Follow documented handoff procedures
+
+See `docs/agent-coordination-guide.md` for details.
+
+### Technical Questions
+
+#### Q: What's the difference between strategic-task-planner and leverage-ai-agents?
+**A**: 
+- **strategic-task-planner**: Handles simple-moderate projects (1-3 agents, sequential workflows)
+- **leverage-ai-agents**: Handles complex projects (4+ agents, parallel workflows, optimization)
+
+Strategic-task-planner escalates to leverage-ai-agents when complexity warrants it.
+
+#### Q: Can I create my own custom agents?
+**A**: Yes! Two ways:
+1. **Recommended**: Use `@auto-agent-generator` to create agents that follow ecosystem standards
+2. **Manual**: Follow template in `agents/coordination/STREAMLINED_AGENT_TEMPLATE.md`
+
+#### Q: How do I know which agent to use for my task?
+**A**: Three approaches:
+1. **Ask Strategic Planner**: `@strategic-task-planner: I need to [describe task]`
+2. **Check Agent Directory**: Review category READMEs for agent capabilities
+3. **Browse Categories**: Look at category READMEs for overviews
+
+#### Q: What if two agents have overlapping capabilities?
+**A**: Agents are designed with distinct, non-overlapping specializations:
+- Each has clear scope boundaries
+- Descriptions specify "USE WHEN" conditions
+- Coordination agents help select optimal agent
+- Agents can consult each other when needed
+
+If you find overlaps, please report as an issue!
+
+#### Q: Can agents work in parallel on different parts of a project?
+**A**: Yes! Use `@leverage-ai-agents` for parallel coordination:
+- Identifies independent work streams
+- Manages multiple agents simultaneously
+- Synchronizes at integration points
+- Optimizes workflow efficiency
+
+### Project Questions
+
+#### Q: How long does a typical project take with agents?
+**A**: Depends on project scope:
+- **Small projects**: 1-2 days (2-3 agents)
+- **Medium projects**: 1-2 weeks (4-6 agents)
+- **Large projects**: 4-8 weeks (8-12 agents)
+- **Enterprise projects**: 2-6 months (15+ agents)
+
+Agents accelerate but don't eliminate development time.
+
+#### Q: What types of projects work best with this ecosystem?
+**A**: The ecosystem is universal and works for:
+- ✅ Web applications (SaaS, e-commerce, content sites)
+- ✅ Mobile applications (iOS, Android, cross-platform)
+- ✅ AI/ML projects (models, pipelines, analytics)
+- ✅ APIs and microservices
+- ✅ Data processing and analytics
+- ✅ Cloud infrastructure and DevOps
+- ✅ Global/multilingual applications
+- ✅ Enterprise systems
+
+#### Q: Do I need technical knowledge to use the agents?
+**A**: 
+- **Basic Projects**: Non-technical users can use strategic-task-planner for guidance
+- **Complex Projects**: Technical knowledge helpful for quality assessment
+- **Implementation**: Technical skills needed to evaluate and implement agent suggestions
+- **Strategic Decisions**: Business stakeholders can engage product-manager and business-analyst
+
+#### Q: What if I get stuck mid-project?
+**A**: 
+1. Review workspace context
+2. Consult `@strategic-task-planner` for next steps
+3. Engage `@code-reviewer` for quality check
+4. Break project into smaller phases
+5. Ask in community channels
+6. Review troubleshooting section above
+
+### Performance & Limits
+
+#### Q: Are there limits to how many agents I can use?
+**A**: Technical limits:
+- **IDE Performance**: All 48 agents may slow some systems
+- **Context Limits**: Very complex projects may need phase breaks
+- **Coordination Complexity**: 15+ agents in parallel needs careful coordination
+
+Practical limits:
+- Most projects use 4-8 agents
+- Sequential execution more manageable than parallel
+- Break large projects into phases
+
+#### Q: How do I optimize performance with many agents?
+**A**:
+1. Install only needed categories
+2. Work sequentially when possible
+3. Clear context between major phases
+4. Use coordination agents for workflow optimization
+5. Save deliverables to files regularly
+
+### Troubleshooting
+
+#### Q: Agent isn't responding to @mentions
+**A**: See "Agent Not Recognized After Installation" in Troubleshooting section above.
+
+#### Q: How do I report bugs or request features?
+**A**:
+- **Bugs**: GitHub Issues with reproduction steps
+- **Features**: GitHub Issues with use case description
+- **Questions**: GitHub Discussions or community channels
+
+## 💬 Support & Community
+
+### Getting Help
+
+#### Documentation
+- 📖 **Start Here**: This README for ecosystem overview
+- 📁 **Category Guides**: `agents/[category]/README.md` for category-specific guidance
+- 🎯 **Agent Details**: Individual `.mdc` files for agent capabilities
+- 📚 **Coordination Guide**: `docs/agent-coordination-guide.md` for multi-agent workflows
+- 🚀 **Quick Start**: `docs/quick-start-guide.md` for fast onboarding
+
+#### Community Support
+- 💬 **Discussions**: GitHub Discussions - Ask questions, share experiences
+- 🐛 **Bug Reports**: GitHub Issues - Report bugs with reproduction steps
+- 💡 **Feature Requests**: GitHub Issues - Suggest improvements
+- 📧 **Contact**: For private or security issues
+
+#### Getting Answers
+1. **Search Documentation**: Check this README and category guides first
+2. **Search Issues**: Someone may have asked already
+3. **Ask in Discussions**: Community can help with common questions
+4. **File Issue**: For bugs or unclear documentation
+
+### Success Stories
+
+**Share your experience**: Did the AI Agent Ecosystem help your project? We'd love to hear about it!
+- Add to Discussions
+- Share your use case
+- Contribute examples
+
 ## 🤝 Contributing
 
-This ecosystem is designed to be:
-- **Extensible**: Add new specialist agents following the established patterns
-- **Maintainable**: Clear boundaries and coordination protocols
-- **Professional**: Enterprise-grade quality and documentation standards
+We welcome contributions to the AI Agent Ecosystem! Whether you're creating new agents, improving existing ones, enhancing documentation, or sharing examples, your contributions help make this ecosystem better for everyone.
 
-### **Agent Development Guidelines**
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes following our guidelines
+4. Test thoroughly
+5. Submit a pull request
+
+### Types of Contributions
+
+- 🎯 **New Agents**: Use `@auto-agent-generator` for consistency
+- 📝 **Documentation**: Improve READMEs, add examples, fix typos
+- 🐛 **Bug Fixes**: Fix issues with agent behavior or coordination
+- ✨ **Enhancements**: Improve existing agent capabilities
+- 📚 **Examples**: Share your success stories and use cases
+
+**See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines** including:
+- Agent development standards
+- PR process and requirements
+- Testing guidelines
+- Code of conduct
+- How to report issues
+
+### Agent Development Guidelines
+
 - Each agent must have a distinct, non-overlapping specialty
 - Follow the workspace management protocol
 - Include comprehensive expertise descriptions
 - Maintain professional tone and deep technical knowledge
-- Use **`@auto-agent-generator`** for creating new agents to ensure consistency and proper integration
+- Keep .mdc files under 400 lines for optimal Cursor performance
+- Use **`@auto-agent-generator`** for creating new agents to ensure consistency
 
 ## 📄 License
 
