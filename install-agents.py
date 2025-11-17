@@ -87,11 +87,11 @@ def get_category_description(category: str) -> str:
 def validate_target_directory(target_path: str, is_claude: bool = False) -> Path:
     """Validate and create target directory, with smart path suggestions."""
     target = Path(target_path).expanduser().resolve()
-    
+
     # Check if path already has the expected structure
     expected_agent_dir = "agents" if is_claude else "rules"
     expected_parent_dir = ".claude" if is_claude else ".cursor"
-    
+
     if target.name == expected_agent_dir and target.parent.name == expected_parent_dir:
         # Path is already correct
         try:
@@ -100,14 +100,14 @@ def validate_target_directory(target_path: str, is_claude: bool = False) -> Path
         except Exception as e:
             print(f"❌ Error: Cannot create target directory {target}: {e}")
             sys.exit(1)
-    
+
     # Path doesn't match expected patterns - provide suggestions
     install_type_name = "Claude Desktop" if is_claude else "Cursor"
     print(f"⚠️  Warning: Target path doesn't match expected {install_type_name} structure")
     print(f"📁 Current path: {target}")
     print()
     print("What would you like to do?")
-    
+
     # Smart suggestions based on current path and installation type
     if target.name == expected_parent_dir:
         # User provided ~/.cursor or ~/.claude - suggest adding the agent directory
@@ -116,7 +116,7 @@ def validate_target_directory(target_path: str, is_claude: bool = False) -> Path
         print("2. Use the given directory as-is")
         print("3. Cancel installation")
         print()
-        
+
         while True:
             try:
                 choice = input("Enter your choice (1/2/3): ").strip()
@@ -143,7 +143,7 @@ def validate_target_directory(target_path: str, is_claude: bool = False) -> Path
         print("2. Use the given directory as-is")
         print("3. Cancel installation")
         print()
-        
+
         while True:
             try:
                 choice = input("Enter your choice (1/2/3): ").strip()
@@ -265,7 +265,43 @@ def copy_documentation_files(target_dir: Path) -> dict:
 
     return results
 
-def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None) -> None:
+def copy_cursor_commands(base_dir: Path) -> int:
+    """Copy custom Cursor commands to the commands directory."""
+    script_dir = get_script_directory()
+    commands_source_dir = script_dir / "commands"
+
+    # Determine target commands directory
+    # If base_dir is ~/.cursor/rules, commands go to ~/.cursor/commands
+    cursor_parent = base_dir.parent
+    target_commands_dir = cursor_parent / "commands"
+
+    if not commands_source_dir.exists():
+        print(f"⚠️  Warning: Commands directory not found at {commands_source_dir}")
+        return 0
+
+    # Create target commands directory
+    try:
+        target_commands_dir.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        print(f"⚠️  Warning: Failed to create commands directory {target_commands_dir}: {e}")
+        return 0
+
+    commands_copied = 0
+
+    # Copy all command files
+    for command_file in commands_source_dir.glob("*.md"):
+        target_file = target_commands_dir / command_file.name
+
+        try:
+            shutil.copy2(command_file, target_file)
+            print(f"✅ Copied command: {command_file.name}")
+            commands_copied += 1
+        except Exception as e:
+            print(f"❌ Error copying command {command_file.name}: {e}")
+
+    return commands_copied
+
+def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None, skip_commands: bool = False) -> None:
     """Install specified agents or all agents to target directory."""
     available_agents = discover_agents()
 
@@ -278,10 +314,19 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
         print("📋 Copying required documentation files...")
         doc_results = copy_documentation_files(target_dir)
         docs_copied = sum(doc_results.values())
+
+        # Copy custom Cursor commands (unless skipped)
+        if not skip_commands:
+            print("\n⚡ Installing Cursor custom commands...")
+            commands_copied = copy_cursor_commands(target_dir)
+        else:
+            print("ℹ️  Skipping Cursor custom commands (--skip-commands flag set)")
+            commands_copied = 0
     else:
         print("📋 Installing for Claude Desktop (documentation files not needed)...")
         doc_results = {}
         docs_copied = 0
+        commands_copied = 0
 
     copied_count = 0
     total_count = 0
@@ -335,6 +380,8 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
     print(f"\n🎯 Installation Summary:")
     print(f"   ✅ Successfully copied: {copied_count} agents")
     print(f"   ✅ Documentation files: {docs_copied}/5 copied successfully")
+    if install_type == "cursor" and commands_copied > 0:
+        print(f"   ✅ Cursor commands: {commands_copied} custom commands installed")
     if total_count > copied_count:
         print(f"   ⚠️  Failed or skipped: {total_count - copied_count} agents")
     print(f"   📁 Target directory: {target_dir}")
@@ -345,6 +392,12 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
         if doc_results.get("AGENT_HIERARCHY.md", False):
             print(f"   📋 Agent coordination enabled with full documentation support")
             print(f"   📖 Coordination guide: See agent-coordination-guide.md")
+        if install_type == "cursor" and commands_copied > 0:
+            print(f"\n⚡ Cursor Commands Ready:")
+            print(f"   • Type / in Cursor chat to see available commands")
+            print(f"   • Try: /code-review @yourfile.ts")
+            print(f"   • Available commands: code-review, add-tests, security-audit,")
+            print(f"     optimize-performance, generate-api-docs")
 
 def list_available_categories():
     """List all available agent categories and their agents."""
@@ -420,6 +473,9 @@ Examples:
   python install-agents.py ~/.cursor/rules --category coordination core-technical
   python install-agents.py ~/.cursor/rules --agents strategic-task-planner backend-architect
 
+  # Skip custom commands installation
+  python install-agents.py ~/.cursor/rules --all --skip-commands
+
   # Claude Desktop installation (with --claude flag)
   python install-agents.py ~/.claude/agents --claude --all
   python install-agents.py ~/.claude/agents --claude --category coordination
@@ -446,6 +502,9 @@ Examples:
 
     parser.add_argument('--claude', action='store_true',
                        help='Install for Claude Desktop (.md format with model field)')
+
+    parser.add_argument('--skip-commands', action='store_true',
+                       help='Skip installing Cursor custom commands (installed by default)')
 
     parser.add_argument('--list-categories', action='store_true',
                        help='List all available agent categories with descriptions')
@@ -520,11 +579,11 @@ Examples:
     # Perform installation
     if not args.dry_run:
         if args.all:
-            install_agents(target_dir, install_type)
+            install_agents(target_dir, install_type, skip_commands=args.skip_commands)
         elif args.category:
-            install_agents(target_dir, install_type, categories=args.category)
+            install_agents(target_dir, install_type, categories=args.category, skip_commands=args.skip_commands)
         elif args.agents:
-            install_agents(target_dir, install_type, agent_list=args.agents)
+            install_agents(target_dir, install_type, agent_list=args.agents, skip_commands=args.skip_commands)
     else:
         print("📋 Would install agents based on your selection")
         if args.agents:
@@ -536,6 +595,11 @@ Examples:
                     print(f"  • {agent_name} (from {category})")
                 else:
                     print(f"  • {agent_name} (NOT FOUND)")
+
+        if args.skip_commands:
+            print("  • Cursor commands will be skipped (--skip-commands)")
+        else:
+            print("  • Cursor commands will be installed to ~/.cursor/commands")
 
 if __name__ == "__main__":
     main()

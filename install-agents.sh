@@ -51,6 +51,7 @@ usage() {
     echo "  --category CAT...    Install agents from specific categories"
     echo "  --agents AGENT...    Install specific agents by name"
     echo "  --claude             Install for Claude Desktop (.md format with model field)"
+    echo "  --skip-commands      Skip installing Cursor custom commands (installed by default)"
     echo "  --list-categories    List all available categories"
     echo "  --list-agents        List all available agents"
     echo "  --list-by-category   List agents organized by category"
@@ -62,6 +63,9 @@ usage() {
     echo "  $0 ~/.cursor/rules --all"
     echo "  $0 ~/.cursor/rules --category coordination core-technical"
     echo "  $0 ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist"
+    echo ""
+    echo "  # Skip custom commands installation"
+    echo "  $0 ~/.cursor/rules --all --skip-commands"
     echo ""
     echo "  # Claude Desktop installation"
     echo "  $0 ~/.claude/agents --claude --all"
@@ -191,7 +195,6 @@ validate_target_directory() {
        [[ "$(basename "$(dirname "$target_dir")")" == "$expected_parent_dir" ]]; then
         # Path is already correct
         if [[ ! -d "$target_dir" ]]; then
-            log_info "Creating target directory: $target_dir"
             mkdir -p "$target_dir" || {
                 log_error "Failed to create target directory: $target_dir"
                 exit 1
@@ -283,7 +286,6 @@ validate_target_directory() {
 
     # Create directory if it doesn't exist
     if [[ ! -d "$target_dir" ]]; then
-        log_info "Creating target directory: $target_dir"
         mkdir -p "$target_dir" || {
             log_error "Failed to create target directory: $target_dir"
             exit 1
@@ -390,26 +392,70 @@ copy_documentation_files() {
         local target_file="$target_dir/$filename"
 
         if [[ ! -f "$source_file" ]]; then
-            log_warning "$filename not found at $source_file"
+            log_warning "$filename not found at $source_file" >&2
             continue
         fi
 
         if cp "$source_file" "$target_file"; then
-            log_success "Copied $filename"
-            ((docs_copied++))
+            log_success "Copied $filename" >&2
+            docs_copied=$((docs_copied + 1))
         else
-            log_error "Failed to copy $filename"
+            log_error "Failed to copy $filename" >&2
         fi
     done
 
     echo "$docs_copied"
 }
 
+copy_cursor_commands() {
+    local base_dir="$1"
+    local commands_copied=0
+    local commands_dir="$SCRIPT_DIR/commands"
+
+    # Determine target commands directory
+    # If base_dir is ~/.cursor/rules, commands go to ~/.cursor/commands
+    local cursor_parent="$(dirname "$base_dir")"
+    local target_commands_dir="$cursor_parent/commands"
+
+    if [[ ! -d "$commands_dir" ]]; then
+        log_warning "Commands directory not found at $commands_dir" >&2
+        echo "0"
+        return
+    fi
+
+    # Create target commands directory
+    if [[ ! -d "$target_commands_dir" ]]; then
+        mkdir -p "$target_commands_dir" || {
+            log_warning "Failed to create commands directory: $target_commands_dir" >&2
+            echo "0"
+            return
+        }
+    fi
+
+    # Copy all command files
+    for command_file in "$commands_dir"/*.md; do
+        if [[ -f "$command_file" ]]; then
+            local filename=$(basename "$command_file")
+            local target_file="$target_commands_dir/$filename"
+
+            if cp "$command_file" "$target_file"; then
+                log_success "Copied command: $filename" >&2
+                commands_copied=$((commands_copied + 1))
+            else
+                log_error "Failed to copy command: $filename" >&2
+            fi
+        fi
+    done
+
+    echo "$commands_copied"
+}
+
 install_agents() {
     local target_dir="$1"
     local install_type="$2"
     local mode="$3"
-    shift 3
+    local skip_commands="$4"
+    shift 4
     local items=("$@")
     local total_copied=0
     local total_agents=0
@@ -424,9 +470,21 @@ install_agents() {
         if [[ -f "$target_dir/AGENT_HIERARCHY.md" ]]; then
             hierarchy_copied=true
         fi
+
+        # Copy custom Cursor commands (unless skipped)
+        if [[ "$skip_commands" == "false" ]]; then
+            echo ""
+            log_info "Installing Cursor custom commands..."
+            local commands_copied
+            commands_copied=$(copy_cursor_commands "$target_dir")
+        else
+            log_info "Skipping Cursor custom commands (--skip-commands flag set)"
+            local commands_copied=0
+        fi
     else
         log_info "Installing for Claude Desktop (documentation files not needed)..."
         local docs_copied=0
+        local commands_copied=0
     fi
 
     case "$mode" in
@@ -445,9 +503,9 @@ install_agents() {
 
                     for agent in "${agents[@]}"; do
                         if copy_agent "$agent" "$category" "$target_dir" "$install_type"; then
-                            ((total_copied++))
+                            total_copied=$((total_copied + 1))
                         fi
-                        ((total_agents++))
+                        total_agents=$((total_agents + 1))
                     done
                 fi
             done
@@ -470,9 +528,9 @@ install_agents() {
 
                 for agent in "${agents[@]}"; do
                     if copy_agent "$agent" "$category" "$target_dir" "$install_type"; then
-                        ((total_copied++))
+                        total_copied=$((total_copied + 1))
                     fi
-                    ((total_agents++))
+                    total_agents=$((total_agents + 1))
                 done
             done
             ;;
@@ -484,12 +542,12 @@ install_agents() {
                 local category
                 if category=$(find_agent_category "$agent_name"); then
                     if copy_agent "$agent_name" "$category" "$target_dir" "$install_type"; then
-                        ((total_copied++))
+                        total_copied=$((total_copied + 1))
                     fi
                 else
                     log_warning "Agent $agent_name not found in any category"
                 fi
-                ((total_agents++))
+                total_agents=$((total_agents + 1))
             done
             ;;
     esac
@@ -499,6 +557,9 @@ install_agents() {
     echo "🎯 Installation Summary:"
     echo "   ✅ Successfully copied: $total_copied agents"
     echo "   ✅ Documentation files: $docs_copied/5 copied successfully"
+    if [[ "$install_type" == "cursor" && $commands_copied -gt 0 ]]; then
+        echo "   ✅ Cursor commands: $commands_copied custom commands installed"
+    fi
     if [[ $total_agents -gt $total_copied ]]; then
         echo "   ⚠️  Failed or skipped: $((total_agents - total_copied)) agents"
     fi
@@ -512,6 +573,14 @@ install_agents() {
         if [[ "$hierarchy_copied" == true ]]; then
             echo "   📋 Agent coordination enabled with full documentation support"
             echo "   📖 Coordination guide: See agent-coordination-guide.md"
+        fi
+        if [[ "$install_type" == "cursor" && $commands_copied -gt 0 ]]; then
+            echo ""
+            echo "⚡ Cursor Commands Ready:"
+            echo "   • Type / in Cursor chat to see available commands"
+            echo "   • Try: /code-review @yourfile.ts"
+            echo "   • Available commands: code-review, add-tests, security-audit,"
+            echo "     optimize-performance, generate-api-docs"
         fi
     else
         log_warning "No agents were installed."
@@ -621,6 +690,7 @@ main() {
     local items=()
     local dry_run=false
     local claude=false
+    local skip_commands=false
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -665,6 +735,10 @@ main() {
                 ;;
             --claude)
                 claude=true
+                shift
+                ;;
+            --skip-commands)
+                skip_commands=true
                 shift
                 ;;
             --dry-run)
@@ -747,7 +821,7 @@ main() {
 
     # Validate and prepare target directory
     target_dir=$(validate_target_directory "$target_dir" "$claude")
-    log_success "Target directory ready: $target_dir"
+    log_info "Target directory: $target_dir"
     echo ""
 
     if [[ "$dry_run" == true ]]; then
@@ -757,7 +831,7 @@ main() {
 
     # Install agents
     if [[ "$dry_run" == false ]]; then
-        install_agents "$target_dir" "$install_type" "$mode" "${items[@]}"
+        install_agents "$target_dir" "$install_type" "$mode" "$skip_commands" "${items[@]}"
     else
         echo "📋 Would install agents based on your selection:"
         case "$mode" in
@@ -779,6 +853,11 @@ main() {
                 done
                 ;;
         esac
+        if [[ "$skip_commands" == "true" ]]; then
+            echo "  • Cursor commands will be skipped (--skip-commands)"
+        else
+            echo "  • Cursor commands will be installed to ~/.cursor/commands"
+        fi
     fi
 }
 
