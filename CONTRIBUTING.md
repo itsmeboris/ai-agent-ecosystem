@@ -80,10 +80,29 @@ If creating manually, follow this structure:
 ```yaml
 ---
 name: agent-name
-description: Clear one-line description with USE WHEN guidance
+description: Primary capability, secondary capability, tertiary capability, and quaternary capability
 globs:
 alwaysApply: false
 ---
+```
+
+**Description Format**:
+- Use **Simple pattern**: List 3-5 key capabilities separated by commas
+- Length: 50-150 characters (concise but informative)
+- Action-oriented: Focus on what the agent DOES
+- Specific: Include concrete technologies, methodologies, or outcomes
+- NO "USE WHEN": Let capabilities speak for themselves
+
+**Examples**:
+```yaml
+# Technical Implementation
+description: API design and implementation, REST/GraphQL endpoints, documentation generation, and integration testing
+
+# Strategic/Analysis
+description: System architecture design, technology stack evaluation, scalability planning, and architectural pattern establishment
+
+# Business/Domain
+description: E-commerce platform development, payment integration, shopping cart systems, and order management
 ```
 
 **Required Sections**:

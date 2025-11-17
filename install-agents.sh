@@ -15,6 +15,7 @@
 # - TEAM_COLLABORATION_CULTURE.md (communication guidelines)
 # - AGENT_DIRECTORY.md (agent list and collaboration patterns)
 # - agent-coordination-guide.md (coordination methodologies)
+# - agent-best-practices.md (agent development standards)
 #
 # Usage:
 #   # Cursor installation (default)
@@ -376,7 +377,7 @@ copy_agent() {
 copy_documentation_files() {
     local target_dir="$1"
     local docs_copied=0
-    local total_docs=5
+    local total_docs=6
 
     # Define required documentation files
     declare -A doc_files=(
@@ -385,6 +386,7 @@ copy_documentation_files() {
         ["TEAM_COLLABORATION_CULTURE.md"]="$AGENTS_DIR/coordination/TEAM_COLLABORATION_CULTURE.md"
         ["AGENT_DIRECTORY.md"]="$AGENTS_DIR/coordination/AGENT_DIRECTORY.md"
         ["agent-coordination-guide.md"]="$SCRIPT_DIR/docs/agent-coordination-guide.md"
+        ["agent-best-practices.md"]="$SCRIPT_DIR/docs/agent-best-practices.md"
     )
 
     for filename in "${!doc_files[@]}"; do

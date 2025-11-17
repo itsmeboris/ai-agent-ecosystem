@@ -33,12 +33,26 @@ alwaysApply: true
 ```yaml
 ---
 name: agent-name
-description: Clear description of expertise and when to apply this agent
+description: Primary capability, secondary capability, tertiary capability, and quaternary capability
 globs:
 alwaysApply: false
 ---
 ```
 *Used for: All technical, business, UX, security, data, and specialized domain agents*
+
+**Description Format Guidelines:**
+- **Pattern**: List 3-5 key capabilities separated by commas
+- **Length**: 50-150 characters (concise but informative)
+- **Style**: Action-oriented, focus on what the agent DOES
+- **Content**: Include specific technologies, methodologies, or outcomes
+- **No "USE WHEN"**: Capabilities should clearly imply usage context
+
+**Examples:**
+```yaml
+description: Server-side development, API design, database integration, and backend architecture implementation
+description: Machine learning model implementation, NLP systems, semantic search, and recommendation engines
+description: User interface design, user experience optimization, design system creation, and usability review
+```
 
 **Key Ecosystem Design Decisions:**
 - **Single Entry Point**: Only strategic-task-planner is always applied, serving as the universal coordinator

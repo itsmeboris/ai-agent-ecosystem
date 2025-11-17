@@ -15,6 +15,7 @@ Documentation Files (Cursor only):
 - TEAM_COLLABORATION_CULTURE.md (communication guidelines)
 - AGENT_DIRECTORY.md (agent list and collaboration patterns)
 - agent-coordination-guide.md (coordination methodologies)
+- agent-best-practices.md (agent development standards)
 
 Usage:
     # Cursor installation (default)
@@ -242,7 +243,8 @@ def copy_documentation_files(target_dir: Path) -> dict:
         "WORKSPACE_PROTOCOLS.md": agents_dir / "coordination" / "WORKSPACE_PROTOCOLS.md",
         "TEAM_COLLABORATION_CULTURE.md": agents_dir / "coordination" / "TEAM_COLLABORATION_CULTURE.md",
         "AGENT_DIRECTORY.md": agents_dir / "coordination" / "AGENT_DIRECTORY.md",
-        "agent-coordination-guide.md": script_dir / "docs" / "agent-coordination-guide.md"
+        "agent-coordination-guide.md": script_dir / "docs" / "agent-coordination-guide.md",
+        "agent-best-practices.md": script_dir / "docs" / "agent-best-practices.md"
     }
 
     results = {}

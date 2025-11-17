@@ -30,6 +30,7 @@ This repository contains **48 professional AI agents** that collaborate to deliv
 - **Coordinated Intelligence**: Agents work together, not in isolation
 - **Clear Boundaries**: No overlapping responsibilities, distinct specializations
 - **Scalable Architecture**: From simple scripts to enterprise-scale systems
+- **Consistent Descriptions**: All agents use standardized, action-oriented capability descriptions for easy discovery
 
 ## 🏗️ Agent Architecture
 
