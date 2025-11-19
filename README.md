@@ -9,6 +9,7 @@ A comprehensive collection of specialized AI agents designed to work together as
 - [How It Works](#-how-it-works)
 - [Agent Coordination Architecture](#-agent-coordination-architecture)
 - [Common Workflow Patterns](#-common-workflow-patterns)
+- [Cursor Hooks Integration](#-cursor-hooks-integration)
 - [Best Practices for Usage](#-best-practices-for-usage)
 - [Universal Application Examples](#-universal-application-examples)
 - [Installation & Setup](#-installation--setup)
@@ -31,6 +32,7 @@ This repository contains **48 professional AI agents** that collaborate to deliv
 - **Clear Boundaries**: No overlapping responsibilities, distinct specializations
 - **Scalable Architecture**: From simple scripts to enterprise-scale systems
 - **Consistent Descriptions**: All agents use standardized, action-oriented capability descriptions for easy discovery
+- **Automated Workflow**: Cursor hooks for command execution, progress tracking, and auto-continuation
 
 ## 🏗️ Agent Architecture
 
@@ -149,6 +151,11 @@ graph TD
     D --> K[Performance Optimization]
     D --> L[Complex Coordination Patterns]
 
+    G --> M[🪝 Hooks Active Throughout]
+    I --> M
+    J --> M
+    M --> N[Command Execution<br/>Progress Tracking<br/>Auto-Continue]
+
     subgraph "Simple Project Flow (80% of cases)"
         C
         E
@@ -164,10 +171,17 @@ graph TD
         L
     end
 
+    subgraph "Automation Layer 🪝"
+        M
+        N
+    end
+
     style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     style C fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     style D fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
     style H fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style M fill:#ffd700,stroke:#ff8c00,stroke-width:3px
+    style N fill:#ffd700,stroke:#ff8c00,stroke-width:2px
 ```
 
 This architecture ensures that:
@@ -175,6 +189,7 @@ This architecture ensures that:
 - **20% of complex projects** get sophisticated multi-agent orchestration
 - **Clear escalation paths** prevent coordination bottlenecks
 - **Proper delegation** maintains agent specialization boundaries
+- **Automation layer (🪝 Hooks)** enhances all workflows with instant command execution, progress tracking, and auto-continuation
 
 ## 📋 Common Workflow Patterns
 
@@ -200,6 +215,169 @@ Localization Planning → Messaging Design → Cultural Adaptation → Performan
 Multiple agents work simultaneously on independent components:
 - AI model training + Database design + Frontend development
 - Security implementation + Performance optimization + Documentation
+
+## 🪝 Cursor Hooks Integration
+
+Enhance your AI agent workflow with automated Cursor hooks that seamlessly integrate into your development process.
+
+### **What Are Cursor Hooks?**
+
+Cursor hooks are automated scripts that intercept and enhance agent interactions, providing:
+- **Seamless Command Execution**: Commands execute transparently with output captured for agent analysis
+- **Progress Tracking**: Automatic reminders to update workspace documentation
+- **Auto-Continuation**: Unattended execution of multi-task workflows
+
+### **Available Hooks**
+
+#### **1. Command Executor** (`beforeShellExecution`)
+- Executes commands in your workspace root automatically
+- Captures stdout/stderr and returns raw output to agents
+- No timeout restrictions for long-running commands
+- Full activity logging to `~/.cursor/command-execution.log`
+
+**Benefits:**
+- ✅ Agents see command output and can make informed decisions
+- ✅ Seamless behavior - works exactly like manual execution
+- ✅ No blocking or waiting for user approval
+
+#### **2. Progress Enforcement** (`afterAgentResponse`)
+- Reminds agents to update `SHARED_PROGRESS.md` after completing work
+- Smart detection of substantive responses (>100 characters or agent identifiers)
+- Skips short conversational messages to avoid spam
+- Enforces workspace protocol compliance
+
+**Benefits:**
+- ✅ Consistent documentation across all agent work
+- ✅ Better coordination between sequential agent tasks
+- ✅ Complete audit trail of project progress
+
+#### **3. Auto-Continue** (`stop`)
+- Scans `SHARED_PROGRESS.md` for pending tasks (🔄, In Progress, TODO)
+- Automatically triggers next phase when work remains
+- Respects loop limits (max 4 auto-continues) to prevent infinite loops
+- Comprehensive logging to `~/.cursor/auto-continue.log`
+
+**Benefits:**
+- ✅ Unattended multi-task project execution
+- ✅ No manual intervention needed for sequential workflows
+- ✅ Automatic progression through complex project phases
+
+### **Installation**
+
+Hooks are automatically installed when you run the agent installer:
+
+```bash
+# Install agents with hooks (default)
+python install-agents.py ~/.cursor/rules --all
+
+# Install without hooks
+python install-agents.py ~/.cursor/rules --all --skip-hooks
+```
+
+**After installation:**
+1. Restart Cursor IDE
+2. Verify in Settings → Hooks tab (should show 3 active hooks)
+3. Check hook logs: `tail -f ~/.cursor/command-execution.log`
+
+### **How Hooks Enhance Your Workflow**
+
+**Before Hooks:**
+```
+Agent: "Let me run a command..."
+[User must manually click "Run" to approve]
+[Command executes]
+[Agent sees output and continues]
+[Agent might forget to update SHARED_PROGRESS.md]
+[Task completes]
+[User must manually prompt agent to continue with next task]
+```
+
+**After Hooks:**
+```
+Agent: "Let me run a command..."
+[Hook executes instantly - no approval needed]
+[Agent sees output and continues]
+[Hook reminds agent: "Update SHARED_PROGRESS.md"]
+[Agent completes task, updates documentation]
+[Hook scans for pending tasks]
+[Next task starts automatically - no user intervention]
+```
+
+**Key Improvements:**
+- ✅ **No Manual Approvals**: Commands execute instantly without clicking "Run"
+- ✅ **Automatic Progress Tracking**: Reminders ensure workspace documentation stays current
+- ✅ **Unattended Execution**: Multi-task workflows complete without manual prompting
+
+### **Hooks-Enhanced Workflow Diagram**
+
+```mermaid
+graph TD
+    A[Agent Needs to Execute Command] --> B[🪝 beforeShellExecution Hook]
+    B --> C[Hook Executes Command in Workspace Root]
+    C --> D[Capture stdout/stderr]
+    D --> E[Return Raw Output to Agent]
+    E --> F[Agent Analyzes Output]
+
+    F --> G[Agent Completes Task]
+    G --> H[🪝 afterAgentResponse Hook]
+    H --> I{Substantive Response?}
+    I -->|Yes >100 chars or agent ID| J[Send Progress Reminder]
+    I -->|No short message| K[Skip Reminder]
+
+    J --> L[Agent Updates SHARED_PROGRESS.md]
+    K --> M[Task Complete]
+    L --> M
+
+    M --> N[🪝 stop Hook]
+    N --> O{Check SHARED_PROGRESS.md}
+    O -->|Pending Tasks Found 🔄| P[Auto-Submit Followup Message]
+    O -->|No Pending Tasks| Q[End Loop]
+
+    P --> R[Agent Continues Next Task]
+    R --> A
+
+    style B fill:#ffd700,stroke:#ff8c00,stroke-width:3px
+    style H fill:#ffd700,stroke:#ff8c00,stroke-width:3px
+    style N fill:#ffd700,stroke:#ff8c00,stroke-width:3px
+    style C fill:#90ee90,stroke:#006400,stroke-width:2px
+    style E fill:#87ceeb,stroke:#4169e1,stroke-width:2px
+    style P fill:#ff6b6b,stroke:#c92a2a,stroke-width:2px
+```
+
+**Workflow Stages:**
+1. **Command Execution** (beforeShellExecution) - Instant, transparent command execution
+2. **Progress Tracking** (afterAgentResponse) - Smart reminders for documentation
+3. **Auto-Continuation** (stop) - Automatic detection and continuation of pending tasks
+
+### **Configuration**
+
+Hooks are configured in `~/.cursor/hooks.json`. Advanced users can:
+- Adjust which hooks are enabled
+- Modify timeout settings
+- Customize log file locations
+- Add additional custom hooks
+
+See `hooks/README.md` for detailed configuration options and troubleshooting.
+
+### **Monitoring & Debugging**
+
+**View hook activity:**
+```bash
+# Command execution log
+tail -f ~/.cursor/command-execution.log
+
+# Auto-continue decisions
+tail -f ~/.cursor/auto-continue.log
+```
+
+**Verify hooks are active:**
+- Open Cursor Settings → Hooks tab
+- All 3 hooks should be listed and enabled
+- Check the Hooks output channel for any errors
+
+**Disable hooks temporarily:**
+- Remove or rename `~/.cursor/hooks.json`
+- Restart Cursor
 
 ## 🎯 Best Practices for Usage
 
@@ -537,7 +715,7 @@ backend-architect: "Excellent, incorporating these security measures..."
 Choose based on your project needs.
 
 #### Q: Which agent should I start with?
-**A**: 
+**A**:
 - **For any multi-step project**: Start with `@strategic-task-planner`
 - **For single, simple task**: Directly engage the specialist agent
 - **For complex coordination**: Use `@strategic-task-planner` → `@leverage-ai-agents`
@@ -563,7 +741,7 @@ See `docs/agent-coordination-guide.md` for details.
 ### Technical Questions
 
 #### Q: What's the difference between strategic-task-planner and leverage-ai-agents?
-**A**: 
+**A**:
 - **strategic-task-planner**: Handles simple-moderate projects (1-3 agents, sequential workflows)
 - **leverage-ai-agents**: Handles complex projects (4+ agents, parallel workflows, optimization)
 
@@ -619,14 +797,14 @@ Agents accelerate but don't eliminate development time.
 - ✅ Enterprise systems
 
 #### Q: Do I need technical knowledge to use the agents?
-**A**: 
+**A**:
 - **Basic Projects**: Non-technical users can use strategic-task-planner for guidance
 - **Complex Projects**: Technical knowledge helpful for quality assessment
 - **Implementation**: Technical skills needed to evaluate and implement agent suggestions
 - **Strategic Decisions**: Business stakeholders can engage product-manager and business-analyst
 
 #### Q: What if I get stuck mid-project?
-**A**: 
+**A**:
 1. Review workspace context
 2. Consult `@strategic-task-planner` for next steps
 3. Engage `@code-reviewer` for quality check
