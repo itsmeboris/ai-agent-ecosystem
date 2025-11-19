@@ -17,10 +17,16 @@ Documentation Files (Cursor only):
 - agent-coordination-guide.md (coordination methodologies)
 - agent-best-practices.md (agent development standards)
 
+Cursor Hooks (Cursor only):
+- Workspace progress enforcement (afterAgentResponse)
+- Command execution with output capture (beforeShellExecution)
+- Auto-continuation of pending tasks (stop)
+
 Usage:
     # Cursor installation (default)
     python install-agents.py ~/.cursor/rules --all
     python install-agents.py ~/.cursor/rules --category coordination
+    python install-agents.py ~/.cursor/rules --all --skip-hooks
 
     # Claude Desktop installation (with --claude flag)
     python install-agents.py ~/.claude/agents --claude --all
@@ -303,7 +309,77 @@ def copy_cursor_commands(base_dir: Path) -> int:
 
     return commands_copied
 
-def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None, skip_commands: bool = False) -> None:
+def copy_cursor_hooks(base_dir: Path) -> dict:
+    """Copy Cursor hooks to enable automated workflow features."""
+    script_dir = get_script_directory()
+    hooks_source_dir = script_dir / "hooks"
+
+    # Determine target directories
+    # If base_dir is ~/.cursor/rules, hooks go to ~/.cursor/hooks and ~/.cursor/hooks.json
+    cursor_parent = base_dir.parent
+    target_hooks_dir = cursor_parent / "hooks"
+    target_hooks_json = cursor_parent / "hooks.json"
+
+    results = {
+        'hooks_directory': False,
+        'hooks_json': False,
+        'scripts_count': 0
+    }
+
+    if not hooks_source_dir.exists():
+        print(f"⚠️  Warning: Hooks directory not found at {hooks_source_dir}")
+        return results
+
+    # Create target hooks directory structure
+    try:
+        target_hooks_dir.mkdir(parents=True, exist_ok=True)
+        (target_hooks_dir / "workspace").mkdir(exist_ok=True)
+        (target_hooks_dir / "execution").mkdir(exist_ok=True)
+        (target_hooks_dir / "automation").mkdir(exist_ok=True)
+        results['hooks_directory'] = True
+    except Exception as e:
+        print(f"⚠️  Warning: Failed to create hooks directory {target_hooks_dir}: {e}")
+        return results
+
+    # Copy hook scripts
+    hook_scripts = [
+        ("workspace", "enforce-progress-update.sh"),
+        ("execution", "command-executor.sh"),
+        ("automation", "auto-continue.sh")
+    ]
+
+    for subdir, script_name in hook_scripts:
+        source_file = hooks_source_dir / subdir / script_name
+        target_file = target_hooks_dir / subdir / script_name
+
+        if not source_file.exists():
+            print(f"⚠️  Warning: Hook script not found: {script_name}")
+            continue
+
+        try:
+            shutil.copy2(source_file, target_file)
+            # Make script executable
+            target_file.chmod(0o755)
+            print(f"✅ Copied hook: {subdir}/{script_name}")
+            results['scripts_count'] += 1
+        except Exception as e:
+            print(f"❌ Error copying hook {script_name}: {e}")
+
+    # Copy hooks.json configuration
+    source_hooks_json = hooks_source_dir / "hooks.json"
+    if source_hooks_json.exists():
+        try:
+            shutil.copy2(source_hooks_json, target_hooks_json)
+            print(f"✅ Copied hooks.json configuration")
+            results['hooks_json'] = True
+        except Exception as e:
+            print(f"❌ Error copying hooks.json: {e}")
+    else:
+        print(f"⚠️  Warning: hooks.json not found at {source_hooks_json}")
+
+    return results
+
+def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None, skip_commands: bool = False, skip_hooks: bool = False) -> None:
     """Install specified agents or all agents to target directory."""
     available_agents = discover_agents()
 
@@ -324,11 +400,20 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
         else:
             print("ℹ️  Skipping Cursor custom commands (--skip-commands flag set)")
             commands_copied = 0
+
+        # Copy Cursor hooks (unless skipped)
+        if not skip_hooks:
+            print("\n🪝 Installing Cursor hooks for workflow automation...")
+            hooks_results = copy_cursor_hooks(target_dir)
+        else:
+            print("ℹ️  Skipping Cursor hooks (--skip-hooks flag set)")
+            hooks_results = {'hooks_directory': False, 'hooks_json': False, 'scripts_count': 0}
     else:
         print("📋 Installing for Claude Desktop (documentation files not needed)...")
         doc_results = {}
         docs_copied = 0
         commands_copied = 0
+        hooks_results = {'hooks_directory': False, 'hooks_json': False, 'scripts_count': 0}
 
     copied_count = 0
     total_count = 0
@@ -381,9 +466,11 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
     # Summary
     print(f"\n🎯 Installation Summary:")
     print(f"   ✅ Successfully copied: {copied_count} agents")
-    print(f"   ✅ Documentation files: {docs_copied}/5 copied successfully")
+    print(f"   ✅ Documentation files: {docs_copied}/6 copied successfully")
     if install_type == "cursor" and commands_copied > 0:
         print(f"   ✅ Cursor commands: {commands_copied} custom commands installed")
+    if install_type == "cursor" and hooks_results['scripts_count'] > 0:
+        print(f"   ✅ Cursor hooks: {hooks_results['scripts_count']}/3 hooks installed")
     if total_count > copied_count:
         print(f"   ⚠️  Failed or skipped: {total_count - copied_count} agents")
     print(f"   📁 Target directory: {target_dir}")
@@ -400,6 +487,15 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
             print(f"   • Try: /code-review @yourfile.ts")
             print(f"   • Available commands: code-review, add-tests, security-audit,")
             print(f"     optimize-performance, generate-api-docs")
+        if install_type == "cursor" and hooks_results['scripts_count'] > 0:
+            print(f"\n🪝 Cursor Hooks Enabled:")
+            print(f"   • afterAgentResponse: Enforces workspace progress updates")
+            print(f"   • beforeShellExecution: Captures command output for agents")
+            print(f"   • stop: Auto-continues with pending tasks")
+            print(f"\n   📊 Monitor hook activity:")
+            print(f"   tail -f ~/.cursor/command-execution.log")
+            print(f"   tail -f ~/.cursor/auto-continue.log")
+            print(f"\n   🔧 Verify hooks: Cursor Settings → Hooks tab")
 
 def list_available_categories():
     """List all available agent categories and their agents."""
@@ -470,13 +566,15 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Cursor installation (default)
+  # Cursor installation (default - includes agents, docs, commands, and hooks)
   python install-agents.py ~/.cursor/rules --all
   python install-agents.py ~/.cursor/rules --category coordination core-technical
   python install-agents.py ~/.cursor/rules --agents strategic-task-planner backend-architect
 
-  # Skip custom commands installation
+  # Skip optional components
   python install-agents.py ~/.cursor/rules --all --skip-commands
+  python install-agents.py ~/.cursor/rules --all --skip-hooks
+  python install-agents.py ~/.cursor/rules --all --skip-commands --skip-hooks
 
   # Claude Desktop installation (with --claude flag)
   python install-agents.py ~/.claude/agents --claude --all
@@ -507,6 +605,9 @@ Examples:
 
     parser.add_argument('--skip-commands', action='store_true',
                        help='Skip installing Cursor custom commands (installed by default)')
+
+    parser.add_argument('--skip-hooks', action='store_true',
+                       help='Skip installing Cursor hooks (installed by default)')
 
     parser.add_argument('--list-categories', action='store_true',
                        help='List all available agent categories with descriptions')
@@ -581,11 +682,11 @@ Examples:
     # Perform installation
     if not args.dry_run:
         if args.all:
-            install_agents(target_dir, install_type, skip_commands=args.skip_commands)
+            install_agents(target_dir, install_type, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
         elif args.category:
-            install_agents(target_dir, install_type, categories=args.category, skip_commands=args.skip_commands)
+            install_agents(target_dir, install_type, categories=args.category, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
         elif args.agents:
-            install_agents(target_dir, install_type, agent_list=args.agents, skip_commands=args.skip_commands)
+            install_agents(target_dir, install_type, agent_list=args.agents, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
     else:
         print("📋 Would install agents based on your selection")
         if args.agents:
@@ -602,6 +703,11 @@ Examples:
             print("  • Cursor commands will be skipped (--skip-commands)")
         else:
             print("  • Cursor commands will be installed to ~/.cursor/commands")
+
+        if args.skip_hooks:
+            print("  • Cursor hooks will be skipped (--skip-hooks)")
+        else:
+            print("  • Cursor hooks will be installed to ~/.cursor/hooks")
 
 if __name__ == "__main__":
     main()
