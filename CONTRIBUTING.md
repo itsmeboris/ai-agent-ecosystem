@@ -113,7 +113,12 @@ description: E-commerce platform development, payment integration, shopping cart
 5. Quality standards
 6. Advanced capabilities (if applicable)
 
-**See**: `agents/coordination/STREAMLINED_AGENT_TEMPLATE.md` for complete template
+**Template Files:**
+- `templates/agent_template.mdc` - Main agent structure with placeholders
+- `templates/specialist_checklist.yaml` - For specialist agents
+- `templates/coordinator_checklist.yaml` - For coordinator agents
+
+**Creating New Agents:** Use `@auto-agent-generator` which will read the template, gather requirements, fill placeholders, and create the agent file.
 
 ### Agent Quality Standards
 

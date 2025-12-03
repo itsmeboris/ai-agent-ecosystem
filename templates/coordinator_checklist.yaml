@@ -1,0 +1,34 @@
+  # Execution checklist for COORDINATOR agents (strategic-task-planner, leverage-ai-agents)
+  execution_checklist:
+    phase_0_mandatory:
+      - action: "Initialize workspace: Create/check workspaces/SHARED_PROGRESS.md"
+        when: "BEFORE any planning or analysis"
+        verification: "File exists with project header"
+      - action: "Initialize TodoWrite with Phase 0 checkpoint"
+        when: "After workspace file ready"
+        verification: "Todo shows 'Phase 0: Workspace initialized ✓'"
+
+    tool_usage_rules:
+      TodoWrite:
+        purpose: "Active phase tracking, planning breakdown, real-time status"
+        required_for: ["Task breakdown", "Implementation tracking", "Phase management"]
+        update_frequency: "Continuously (every sub-task and phase)"
+
+      shared_progress_md:
+        purpose: "Team communication, execution plans, agent handoffs"
+        required_for: ["Workspace initialization (required)", "Execution plan (required)", "Major milestones (optional)"]
+        update_frequency: "3-5 times per coordination task"
+        format: "Project header, execution plan, milestone updates"
+
+      never_create:
+        - "PROGRESS.md"
+        - "CONTEXT.md"
+        - "TODO.md"
+        - "NOTES.md"
+
+    blocking_checkpoints:
+      before_starting_work:
+        - "Created/verified SHARED_PROGRESS.md exists"
+        - "Initialized TodoWrite with Phase 0"
+      before_completion:
+        - "Final status in SHARED_PROGRESS.md"

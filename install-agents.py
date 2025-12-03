@@ -238,20 +238,42 @@ def copy_agent(agent_name: str, source_category: str, target_dir: Path, install_
         print(f"❌ Error copying {agent_name}{extension}: {e}")
         return False
 
-def copy_documentation_files(target_dir: Path) -> dict:
-    """Copy all required documentation files to target directory."""
+def copy_documentation_files(target_dir: Path, minimal_docs: bool = False, include_dev_docs: bool = False) -> dict:
+    """Copy documentation files to target directory based on tier selection."""
     script_dir = get_script_directory()
     agents_dir = get_agents_directory()
 
-    # Define required documentation files
-    doc_files = {
+    # Define essential documentation files
+    # Tier 1 (Essential - 6 files): Core discovery and operation
+    essential_docs = {
+        "AGENT_DIRECTORY.md": agents_dir / "coordination" / "AGENT_DIRECTORY.md",
+        "CAPABILITY_DISCOVERY.md": agents_dir / "coordination" / "CAPABILITY_DISCOVERY.md",
         "AGENT_HIERARCHY.md": agents_dir / "coordination" / "AGENT_HIERARCHY.md",
         "WORKSPACE_PROTOCOLS.md": agents_dir / "coordination" / "WORKSPACE_PROTOCOLS.md",
-        "TEAM_COLLABORATION_CULTURE.md": agents_dir / "coordination" / "TEAM_COLLABORATION_CULTURE.md",
-        "AGENT_DIRECTORY.md": agents_dir / "coordination" / "AGENT_DIRECTORY.md",
+        "TOKEN_EFFICIENCY.md": agents_dir / "coordination" / "TOKEN_EFFICIENCY.md",
+        "QUICK_REFERENCE.md": script_dir / "QUICK_REFERENCE.md"
+    }
+
+    # Tier 2 (Standard - 4 more files): Best practices and patterns
+    standard_docs = {
+        "STRUCTURED_OUTPUT_FORMATS.md": agents_dir / "coordination" / "STRUCTURED_OUTPUT_FORMATS.md",
+        "ERROR_HANDLING_PROTOCOL.md": agents_dir / "coordination" / "ERROR_HANDLING_PROTOCOL.md",
         "agent-coordination-guide.md": script_dir / "docs" / "agent-coordination-guide.md",
+        "TEAM_COLLABORATION_CULTURE.md": agents_dir / "coordination" / "TEAM_COLLABORATION_CULTURE.md"
+    }
+
+    # Tier 3 (Developer - 2 more files): Agent development
+    developer_docs = {
+        "STREAMLINED_AGENT_TEMPLATE.md": agents_dir / "coordination" / "STREAMLINED_AGENT_TEMPLATE.md",
         "agent-best-practices.md": script_dir / "docs" / "agent-best-practices.md"
     }
+
+    # Combine based on minimal_docs flag (default is standard = tier 1 + tier 2)
+    doc_files = {**essential_docs}  # Always include essential
+    if not minimal_docs:
+        doc_files.update(standard_docs)  # Add standard by default
+    if include_dev_docs:
+        doc_files.update(developer_docs)  # Add developer docs if requested
 
     results = {}
 
@@ -272,6 +294,118 @@ def copy_documentation_files(target_dir: Path) -> dict:
             results[filename] = False
 
     return results
+
+def copy_summaries(target_dir: Path) -> int:
+    """Copy agent summaries to target directory for token efficiency."""
+    script_dir = get_script_directory()
+    source_summaries = script_dir / "agents" / "summaries"
+    target_summaries = target_dir / "summaries"
+
+    if not source_summaries.exists():
+        print(f"⚠️  Warning: Summaries directory not found at {source_summaries}")
+        return 0
+
+    try:
+        target_summaries.mkdir(parents=True, exist_ok=True)
+
+        copied = 0
+        for summary_file in source_summaries.glob("*.yaml"):
+            target_file = target_summaries / summary_file.name
+            shutil.copy2(summary_file, target_file)
+            copied += 1
+
+        if copied > 0:
+            print(f"✅ Copied {copied} agent summaries to {target_summaries.relative_to(target_dir.parent) if target_dir.parent != target_summaries.parent else target_summaries}")
+        return copied
+    except Exception as e:
+        print(f"❌ Error copying summaries: {e}")
+        return 0
+
+def copy_tools(target_dir: Path) -> dict:
+    """Copy tools directory to target for capability discovery and token efficiency."""
+    script_dir = get_script_directory()
+    source_tools = script_dir / "tools"
+    target_tools = target_dir / "tools"
+
+    result = {'count': 0, 'success': False, 'tools': []}
+
+    if not source_tools.exists():
+        print(f"⚠️  Warning: Tools directory not found at {source_tools}")
+        return result
+
+    try:
+        # Create target tools directory
+        target_tools.mkdir(parents=True, exist_ok=True)
+
+        # Copy all Python tools
+        python_tools = list(source_tools.glob("*.py"))
+        shell_tools = list(source_tools.glob("*.sh"))
+
+        for tool_file in python_tools + shell_tools:
+            target_file = target_tools / tool_file.name
+            shutil.copy2(tool_file, target_file)
+
+            # Make executable
+            target_file.chmod(0o755)
+
+            result['tools'].append(tool_file.name)
+            result['count'] += 1
+
+        if result['count'] > 0:
+            print(f"✅ Copied {result['count']} tools to {target_tools.relative_to(target_dir.parent) if target_dir.parent != target_tools.parent else target_tools}")
+            result['success'] = True
+
+        return result
+    except Exception as e:
+        print(f"❌ Error copying tools: {e}")
+        return result
+
+def generate_agent_summaries(target_dir: Path) -> bool:
+    """Generate agent summaries directly in target directory for token efficiency."""
+    import subprocess
+
+    script_dir = get_script_directory()
+    tools_dir = script_dir / "tools"
+    generate_script = tools_dir / "generate_summaries.py"
+    target_summaries = target_dir / "summaries"
+
+    if not generate_script.exists():
+        print(f"⚠️  Warning: generate_summaries.py not found at {generate_script}")
+        return False
+
+    try:
+        # Create target summaries directory
+        target_summaries.mkdir(parents=True, exist_ok=True)
+
+        print("\n🔧 Generating agent summaries for token efficiency...")
+        result = subprocess.run(
+            ['python3', str(generate_script),
+             '--agents-dir', str(script_dir / 'agents'),
+             '--output-dir', str(target_summaries)],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+
+        if result.returncode == 0:
+            print("✅ Agent summaries generated successfully")
+            # Print summary stats from output
+            for line in result.stdout.split('\n'):
+                if 'Generated:' in line or 'Summary:' in line or 'Total summaries:' in line:
+                    print(f"   {line.strip()}")
+            return True
+        else:
+            print(f"⚠️  Warning: Failed to generate summaries")
+            if result.stderr:
+                print(f"   Error: {result.stderr[:200]}")
+            return False
+
+    except subprocess.TimeoutExpired:
+        print("⚠️  Warning: Summary generation timed out")
+        return False
+    except Exception as e:
+        print(f"⚠️  Warning: Could not generate summaries: {e}")
+        return False
 
 def copy_cursor_commands(base_dir: Path) -> int:
     """Copy custom Cursor commands to the commands directory."""
@@ -379,7 +513,7 @@ def copy_cursor_hooks(base_dir: Path) -> dict:
 
     return results
 
-def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None, skip_commands: bool = False, skip_hooks: bool = False) -> None:
+def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: List[str] = None, categories: List[str] = None, minimal_docs: bool = False, include_dev_docs: bool = False) -> None:
     """Install specified agents or all agents to target directory."""
     available_agents = discover_agents()
 
@@ -387,33 +521,11 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
         print("❌ No agents found in the repository")
         return
 
-    # Always copy required documentation files first (only for Cursor)
-    if install_type == "cursor":
-        print("📋 Copying required documentation files...")
-        doc_results = copy_documentation_files(target_dir)
-        docs_copied = sum(doc_results.values())
-
-        # Copy custom Cursor commands (unless skipped)
-        if not skip_commands:
-            print("\n⚡ Installing Cursor custom commands...")
-            commands_copied = copy_cursor_commands(target_dir)
-        else:
-            print("ℹ️  Skipping Cursor custom commands (--skip-commands flag set)")
-            commands_copied = 0
-
-        # Copy Cursor hooks (unless skipped)
-        if not skip_hooks:
-            print("\n🪝 Installing Cursor hooks for workflow automation...")
-            hooks_results = copy_cursor_hooks(target_dir)
-        else:
-            print("ℹ️  Skipping Cursor hooks (--skip-hooks flag set)")
-            hooks_results = {'hooks_directory': False, 'hooks_json': False, 'scripts_count': 0}
-    else:
-        print("📋 Installing for Claude Desktop (documentation files not needed)...")
-        doc_results = {}
-        docs_copied = 0
-        commands_copied = 0
-        hooks_results = {'hooks_directory': False, 'hooks_json': False, 'scripts_count': 0}
+    # Copy documentation files for ALL platforms
+    doc_tier = "minimal" if minimal_docs else ("full" if include_dev_docs else "standard")
+    print(f"📋 Copying documentation files ({doc_tier} tier)...")
+    doc_results = copy_documentation_files(target_dir, minimal_docs, include_dev_docs)
+    docs_copied = sum(doc_results.values())
 
     copied_count = 0
     total_count = 0
@@ -463,14 +575,24 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
                         copied_count += 1
                     total_count += 1
 
+    # Generate summaries directly in target directory
+    summaries_generated = False
+    if copied_count > 0:
+        summaries_generated = generate_agent_summaries(target_dir)
+
+    # Copy tools to target directory
+    print("\n🛠️  Copying tools for capability discovery and analysis...")
+    tools_result = copy_tools(target_dir)
+
     # Summary
+    doc_tier_name = "Minimal (6)" if minimal_docs else ("Full (12)" if include_dev_docs else "Standard (10)")
     print(f"\n🎯 Installation Summary:")
     print(f"   ✅ Successfully copied: {copied_count} agents")
-    print(f"   ✅ Documentation files: {docs_copied}/6 copied successfully")
-    if install_type == "cursor" and commands_copied > 0:
-        print(f"   ✅ Cursor commands: {commands_copied} custom commands installed")
-    if install_type == "cursor" and hooks_results['scripts_count'] > 0:
-        print(f"   ✅ Cursor hooks: {hooks_results['scripts_count']}/3 hooks installed")
+    print(f"   ✅ Documentation: {docs_copied} files ({doc_tier_name})")
+    if summaries_generated:
+        print(f"   ✅ Agent summaries: 48 summaries generated (93% token reduction)")
+    if tools_result['success']:
+        print(f"   ✅ Tools: {tools_result['count']} utilities for discovery and analysis")
     if total_count > copied_count:
         print(f"   ⚠️  Failed or skipped: {total_count - copied_count} agents")
     print(f"   📁 Target directory: {target_dir}")
@@ -481,21 +603,17 @@ def install_agents(target_dir: Path, install_type: str = "cursor", agent_list: L
         if doc_results.get("AGENT_HIERARCHY.md", False):
             print(f"   📋 Agent coordination enabled with full documentation support")
             print(f"   📖 Coordination guide: See agent-coordination-guide.md")
-        if install_type == "cursor" and commands_copied > 0:
-            print(f"\n⚡ Cursor Commands Ready:")
-            print(f"   • Type / in Cursor chat to see available commands")
-            print(f"   • Try: /code-review @yourfile.ts")
-            print(f"   • Available commands: code-review, add-tests, security-audit,")
-            print(f"     optimize-performance, generate-api-docs")
-        if install_type == "cursor" and hooks_results['scripts_count'] > 0:
-            print(f"\n🪝 Cursor Hooks Enabled:")
-            print(f"   • afterAgentResponse: Enforces workspace progress updates")
-            print(f"   • beforeShellExecution: Captures command output for agents")
-            print(f"   • stop: Auto-continues with pending tasks")
-            print(f"\n   📊 Monitor hook activity:")
-            print(f"   tail -f ~/.cursor/command-execution.log")
-            print(f"   tail -f ~/.cursor/auto-continue.log")
-            print(f"\n   🔧 Verify hooks: Cursor Settings → Hooks tab")
+        if tools_result['success']:
+            print(f"\n🛠️  Tools Available:")
+            tools_path = target_dir / "tools"
+            print(f"   📁 Location: {tools_path}")
+            print(f"   • capability_discovery.py - Find agents by requirements")
+            print(f"   • lazy_loader.py - Token-efficient agent loading")
+            print(f"   • parse-progress.py - Track agent progress")
+            print(f"   • generate_summaries.py - Regenerate summaries")
+            print(f"\n   Quick usage:")
+            print(f"   {tools_path}/capability_discovery.py --find \"your requirement\"")
+            print(f"   {tools_path}/lazy_loader.py --list")
 
 def list_available_categories():
     """List all available agent categories and their agents."""
@@ -603,11 +721,11 @@ Examples:
     parser.add_argument('--claude', action='store_true',
                        help='Install for Claude Desktop (.md format with model field)')
 
-    parser.add_argument('--skip-commands', action='store_true',
-                       help='Skip installing Cursor custom commands (installed by default)')
+    parser.add_argument('--minimal-docs', action='store_true',
+                       help='Install only essential documentation (6 files instead of 10)')
 
-    parser.add_argument('--skip-hooks', action='store_true',
-                       help='Skip installing Cursor hooks (installed by default)')
+    parser.add_argument('--include-dev-docs', action='store_true',
+                       help='Include developer documentation for agent creation (12 files total)')
 
     parser.add_argument('--list-categories', action='store_true',
                        help='List all available agent categories with descriptions')
@@ -682,11 +800,11 @@ Examples:
     # Perform installation
     if not args.dry_run:
         if args.all:
-            install_agents(target_dir, install_type, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
+            install_agents(target_dir, install_type, minimal_docs=args.minimal_docs, include_dev_docs=args.include_dev_docs)
         elif args.category:
-            install_agents(target_dir, install_type, categories=args.category, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
+            install_agents(target_dir, install_type, categories=args.category, minimal_docs=args.minimal_docs, include_dev_docs=args.include_dev_docs)
         elif args.agents:
-            install_agents(target_dir, install_type, agent_list=args.agents, skip_commands=args.skip_commands, skip_hooks=args.skip_hooks)
+            install_agents(target_dir, install_type, agent_list=args.agents, minimal_docs=args.minimal_docs, include_dev_docs=args.include_dev_docs)
     else:
         print("📋 Would install agents based on your selection")
         if args.agents:

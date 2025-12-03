@@ -9,7 +9,7 @@ A comprehensive collection of specialized AI agents designed to work together as
 - [How It Works](#-how-it-works)
 - [Agent Coordination Architecture](#-agent-coordination-architecture)
 - [Common Workflow Patterns](#-common-workflow-patterns)
-- [Cursor Hooks Integration](#-cursor-hooks-integration)
+- [Tools & Automation](#-tools--automation)
 - [Best Practices for Usage](#-best-practices-for-usage)
 - [Universal Application Examples](#-universal-application-examples)
 - [Installation & Setup](#-installation--setup)
@@ -32,7 +32,8 @@ This repository contains **48 professional AI agents** that collaborate to deliv
 - **Clear Boundaries**: No overlapping responsibilities, distinct specializations
 - **Scalable Architecture**: From simple scripts to enterprise-scale systems
 - **Consistent Descriptions**: All agents use standardized, action-oriented capability descriptions for easy discovery
-- **Automated Workflow**: Cursor hooks for command execution, progress tracking, and auto-continuation
+- **Intelligent Discovery**: Tools for automated agent selection, lazy loading, and progress tracking
+- **Token Efficient**: 93% token reduction through lazy loading and agent summaries
 
 ## 🏗️ Agent Architecture
 
@@ -216,169 +217,222 @@ Multiple agents work simultaneously on independent components:
 - AI model training + Database design + Frontend development
 - Security implementation + Performance optimization + Documentation
 
-## 🪝 Cursor Hooks Integration
+## 🛠️ Tools & Automation
 
-Enhance your AI agent workflow with automated Cursor hooks that seamlessly integrate into your development process.
+The ecosystem includes powerful tools for intelligent agent discovery, token efficiency, and progress tracking. All tools are automatically installed and can be used by both agents and users.
 
-### **What Are Cursor Hooks?**
+### **🔍 Available Tools**
 
-Cursor hooks are automated scripts that intercept and enhance agent interactions, providing:
-- **Seamless Command Execution**: Commands execute transparently with output captured for agent analysis
-- **Progress Tracking**: Automatic reminders to update workspace documentation
-- **Auto-Continuation**: Unattended execution of multi-task workflows
+#### **1. Capability Discovery** (`tools/capability_discovery.py`)
+**Purpose:** Find the right agents for your requirements automatically
 
-### **Available Hooks**
+**Agent Usage:**
+```bash
+# Find agents by requirement
+tools/capability_discovery.py --find "REST API design"
+# Returns: api-design-specialist (0.95), backend-architect (0.87)
 
-#### **1. Command Executor** (`beforeShellExecution`)
-- Executes commands in your workspace root automatically
-- Captures stdout/stderr and returns raw output to agents
-- No timeout restrictions for long-running commands
-- Full activity logging to `~/.cursor/command-execution.log`
+# Recommend optimal team for project
+tools/capability_discovery.py --recommend "e-commerce platform"
+# Returns: 5-7 agent team with dependencies
 
-**Benefits:**
-- ✅ Agents see command output and can make informed decisions
-- ✅ Seamless behavior - works exactly like manual execution
-- ✅ No blocking or waiting for user approval
+# Generate capability report
+tools/capability_discovery.py --report
+```
 
-#### **2. Progress Enforcement** (`afterAgentResponse`)
-- Reminds agents to update `SHARED_PROGRESS.md` after completing work
-- Smart detection of substantive responses (>100 characters or agent identifiers)
-- Skips short conversational messages to avoid spam
-- Enforces workspace protocol compliance
+**How Agents Use It:**
+Agents can discover specialists by executing this tool via Bash:
+```markdown
+I'll find the right specialist for database work:
+<execute via Bash tool>
+./tools/capability_discovery.py --find "database optimization"
+</execute>
+```
 
-**Benefits:**
-- ✅ Consistent documentation across all agent work
-- ✅ Better coordination between sequential agent tasks
-- ✅ Complete audit trail of project progress
+---
 
-#### **3. Auto-Continue** (`stop`)
-- Scans `SHARED_PROGRESS.md` for pending tasks (🔄, In Progress, TODO)
-- Automatically triggers next phase when work remains
-- Respects loop limits (max 4 auto-continues) to prevent infinite loops
-- Comprehensive logging to `~/.cursor/auto-continue.log`
+#### **2. Lazy Loader** (`tools/lazy_loader.py`)
+**Purpose:** Token-efficient agent loading (93% token reduction)
 
-**Benefits:**
-- ✅ Unattended multi-task project execution
-- ✅ No manual intervention needed for sequential workflows
-- ✅ Automatic progression through complex project phases
+**Agent Usage:**
+```bash
+# List all available agents (lightweight directory)
+tools/lazy_loader.py --list
+# Returns: All 48 agents, ~100 tokens
+
+# Load agent summary only (~250 tokens vs ~1000)
+tools/lazy_loader.py --summary backend-architect
+
+# Activate full agent definition when needed
+tools/lazy_loader.py --activate backend-architect
+
+# Check what's currently loaded
+tools/lazy_loader.py --status
+```
+
+**Token Efficiency:**
+```
+Traditional: Load all 48 agents = 48,000 tokens
+With Lazy Loading:
+  - Directory: ~100 tokens
+  - Summaries (5 agents): ~1,250 tokens
+  - Full (2 active): ~2,000 tokens
+  → Total: ~3,350 tokens (93% savings!)
+```
+
+**How Agents Use It:**
+Coordination agents should load summaries first, then activate full definitions only when executing:
+```markdown
+First, I'll check available backend specialists:
+<execute via Bash tool>
+./tools/lazy_loader.py --list | grep backend
+</execute>
+
+Now I'll load the backend architect's summary:
+<execute via Bash tool>
+./tools/lazy_loader.py --summary backend-architect
+</execute>
+
+Since we need full expertise, activating complete definition:
+<execute via Bash tool>
+./tools/lazy_loader.py --activate backend-architect
+</execute>
+```
+
+---
+
+#### **3. Progress Tracking** (`tools/parse-progress.py`)
+**Purpose:** Parse and analyze workspace progress files
+
+**Agent Usage:**
+```bash
+# Parse progress markdown
+tools/parse-progress.py workspaces/SHARED_PROGRESS.md
+
+# Export to JSON for programmatic access
+tools/parse-progress.py workspaces/SHARED_PROGRESS.md --json report.json
+
+# Quick shell analysis
+tools/analyze-progress.sh workspaces/SHARED_PROGRESS.md
+
+# Validate format compliance
+tools/validate-progress.sh workspaces/SHARED_PROGRESS.md
+```
+
+---
+
+#### **4. Summary Generation** (`tools/generate_summaries.py`)
+**Purpose:** Regenerate agent summaries after modifications
+
+```bash
+# Regenerate all summaries
+tools/generate_summaries.py
+
+# Regenerate for specific category
+tools/generate_summaries.py --category core-technical
+```
+
+---
+
+#### **5. Error Handling** (`tools/error_handling.py`)
+**Purpose:** Reusable error handling utilities for consistent recovery patterns
+
+---
+
+### **📚 How Agents Know About Tools**
+
+**1. Documentation Files:**
+All installations include these protocol documents:
+- `TOKEN_EFFICIENCY.md` - Explains lazy loading and how to use `lazy_loader.py`
+- `CAPABILITY_DISCOVERY.md` - Explains agent selection and how to use `capability_discovery.py`
+- `QUICK_REFERENCE.md` - Quick command reference for all tools
+
+**2. Agent Instructions:**
+Coordination agents (like `strategic-task-planner`) have built-in knowledge:
+```yaml
+# In agent frontmatter:
+capabilities:
+  command_execution: [bash, python]
+
+# In agent prompt:
+"When you need to find specialists, use: ./tools/capability_discovery.py --find <requirement>"
+"For token efficiency, load summaries first: ./tools/lazy_loader.py --summary <agent>"
+```
+
+**3. Runtime Discovery:**
+Agents can list available tools:
+```bash
+ls tools/
+# Shows: capability_discovery.py, lazy_loader.py, parse-progress.py, etc.
+```
+
+---
+
+### **🎯 Tool Usage Patterns**
+
+**Pattern 1: Agent Discovery**
+```
+strategic-task-planner:
+  → Uses capability_discovery.py to find specialists
+  → Loads summaries of candidates via lazy_loader.py
+  → Selects best match
+  → Activates full definition when delegating
+```
+
+**Pattern 2: Token Optimization**
+```
+leverage-ai-agents:
+  → Loads directory (all 48 agents, ~100 tokens)
+  → Loads summaries for relevant agents (~250 tokens each)
+  → Activates only agents that will execute (~1000 tokens each)
+  → Result: 93% token savings
+```
+
+**Pattern 3: Progress Coordination**
+```
+Any agent:
+  → Checks SHARED_PROGRESS.md via parse-progress.py
+  → Identifies completed vs pending tasks
+  → Updates progress after completing work
+  → Validates format with validate-progress.sh
+```
+
+---
 
 ### **Installation**
 
-Hooks are automatically installed when you run the agent installer:
+Tools are automatically installed with agents:
 
 ```bash
-# Install agents with hooks (default)
-python install-agents.py ~/.cursor/rules --all
+# Standard installation (includes tools)
+python3 install-agents.py .cursor/rules --all
 
-# Install without hooks
-python install-agents.py ~/.cursor/rules --all --skip-hooks
+# For Claude Code
+python3 install-agents.py <your-dir> --all
+
+# For Claude Desktop
+python3 install-agents.py .claude/agents --claude --all
 ```
 
-**After installation:**
-1. Restart Cursor IDE
-2. Verify in Settings → Hooks tab (should show 3 active hooks)
-3. Check hook logs: `tail -f ~/.cursor/command-execution.log`
-
-### **How Hooks Enhance Your Workflow**
-
-**Before Hooks:**
-```
-Agent: "Let me run a command..."
-[User must manually click "Run" to approve]
-[Command executes]
-[Agent sees output and continues]
-[Agent might forget to update SHARED_PROGRESS.md]
-[Task completes]
-[User must manually prompt agent to continue with next task]
-```
-
-**After Hooks:**
-```
-Agent: "Let me run a command..."
-[Hook executes instantly - no approval needed]
-[Agent sees output and continues]
-[Hook reminds agent: "Update SHARED_PROGRESS.md"]
-[Agent completes task, updates documentation]
-[Hook scans for pending tasks]
-[Next task starts automatically - no user intervention]
-```
-
-**Key Improvements:**
-- ✅ **No Manual Approvals**: Commands execute instantly without clicking "Run"
-- ✅ **Automatic Progress Tracking**: Reminders ensure workspace documentation stays current
-- ✅ **Unattended Execution**: Multi-task workflows complete without manual prompting
-
-### **Hooks-Enhanced Workflow Diagram**
-
-```mermaid
-graph TD
-    A[Agent Needs to Execute Command] --> B[🪝 beforeShellExecution Hook]
-    B --> C[Hook Executes Command in Workspace Root]
-    C --> D[Capture stdout/stderr]
-    D --> E[Return Raw Output to Agent]
-    E --> F[Agent Analyzes Output]
-
-    F --> G[Agent Completes Task]
-    G --> H[🪝 afterAgentResponse Hook]
-    H --> I{Substantive Response?}
-    I -->|Yes >100 chars or agent ID| J[Send Progress Reminder]
-    I -->|No short message| K[Skip Reminder]
-
-    J --> L[Agent Updates SHARED_PROGRESS.md]
-    K --> M[Task Complete]
-    L --> M
-
-    M --> N[🪝 stop Hook]
-    N --> O{Check SHARED_PROGRESS.md}
-    O -->|Pending Tasks Found 🔄| P[Auto-Submit Followup Message]
-    O -->|No Pending Tasks| Q[End Loop]
-
-    P --> R[Agent Continues Next Task]
-    R --> A
-
-    style B fill:#ffd700,stroke:#ff8c00,stroke-width:3px
-    style H fill:#ffd700,stroke:#ff8c00,stroke-width:3px
-    style N fill:#ffd700,stroke:#ff8c00,stroke-width:3px
-    style C fill:#90ee90,stroke:#006400,stroke-width:2px
-    style E fill:#87ceeb,stroke:#4169e1,stroke-width:2px
-    style P fill:#ff6b6b,stroke:#c92a2a,stroke-width:2px
-```
-
-**Workflow Stages:**
-1. **Command Execution** (beforeShellExecution) - Instant, transparent command execution
-2. **Progress Tracking** (afterAgentResponse) - Smart reminders for documentation
-3. **Auto-Continuation** (stop) - Automatic detection and continuation of pending tasks
-
-### **Configuration**
-
-Hooks are configured in `~/.cursor/hooks.json`. Advanced users can:
-- Adjust which hooks are enabled
-- Modify timeout settings
-- Customize log file locations
-- Add additional custom hooks
-
-See `hooks/README.md` for detailed configuration options and troubleshooting.
-
-### **Monitoring & Debugging**
-
-**View hook activity:**
+**Verification:**
 ```bash
-# Command execution log
-tail -f ~/.cursor/command-execution.log
+# Check tools are installed
+ls <installation-dir>/tools/
 
-# Auto-continue decisions
-tail -f ~/.cursor/auto-continue.log
+# Test capability discovery
+<installation-dir>/tools/capability_discovery.py --find "test"
+
+# Test lazy loader
+<installation-dir>/tools/lazy_loader.py --list
 ```
 
-**Verify hooks are active:**
-- Open Cursor Settings → Hooks tab
-- All 3 hooks should be listed and enabled
-- Check the Hooks output channel for any errors
+---
 
-**Disable hooks temporarily:**
-- Remove or rename `~/.cursor/hooks.json`
-- Restart Cursor
+### **🔗 See Also**
 
+- **TOKEN_EFFICIENCY.md** - Detailed lazy loading architecture
+- **CAPABILITY_DISCOVERY.md** - Agent selection system details
+- **QUICK_REFERENCE.md** - Quick command reference
 ## 🎯 Best Practices for Usage
 
 ### **Start with Strategy**
@@ -471,44 +525,41 @@ Production Monitoring
 
 Use the provided installation scripts to automatically copy agents to your `.cursor/rules` directory:
 
-#### **Python Script (Cross-platform)**
+#### **Python Script (Recommended)**
 ```bash
-# Install all agents
-python install-agents.py ~/.cursor/rules --all
+# Standard installation (48 agents + 10 docs + summaries + tools)
+python3 install-agents.py .cursor/rules --all
+
+# Minimal installation (48 agents + 6 essential docs)
+python3 install-agents.py .cursor/rules --all --minimal-docs
+
+# Full installation (48 agents + 12 docs including developer guides)
+python3 install-agents.py .cursor/rules --all --include-dev-docs
 
 # Install specific categories
-python install-agents.py ~/.cursor/rules --category coordination core-technical
+python3 install-agents.py .cursor/rules --category coordination core-technical
 
-# Install specific agents by name (from any category)
-python install-agents.py ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist backend-architect
+# Install specific agents
+python3 install-agents.py .cursor/rules --agents strategic-task-planner ai-ml-specialist
 
-# List available options
-python install-agents.py --list-categories    # Categories with descriptions
-python install-agents.py --list-agents        # All agents with their categories
-python install-agents.py --list-by-category   # Agents organized by category
-```
+# For Claude Code (same commands)
+python3 install-agents.py <your-dir> --all
 
-#### **Shell Script (Linux/Mac)**
-```bash
-# Make executable (first time only)
-chmod +x install-agents.sh
-
-# Install all agents
-./install-agents.sh ~/.cursor/rules
-
-# Install specific categories
-./install-agents.sh ~/.cursor/rules --category coordination data-intelligence
-
-# Install specific agents by name
-./install-agents.sh ~/.cursor/rules --agents strategic-task-planner ai-ml-specialist
+# For Claude Desktop (converts to .md format)
+python3 install-agents.py .claude/agents --claude --all
 
 # List available options
-./install-agents.sh --list-categories
-./install-agents.sh --list-agents
-
-# Show help
-./install-agents.sh --help
+python3 install-agents.py --list-categories
+python3 install-agents.py --list-agents
+python3 install-agents.py --list-by-category
 ```
+
+**What Gets Installed:**
+- ✅ 48 specialized AI agents (v2.1.0)
+- ✅ 6-12 protocol documents (based on tier)
+- ✅ 48 agent summaries (93% token reduction)
+- ✅ 7 automation tools (capability discovery, lazy loading, etc.)
+- ✅ NO hooks or commands (replaced by universal tools)
 
 #### **Windows Users**
 Use the Python script or manually copy files:
@@ -571,11 +622,16 @@ Example:
 ```
 
 The auto-agent-generator will:
-- Analyze requirements and determine optimal agent categorization
-- Create comprehensive agent specifications following ecosystem standards
-- Integrate new agents into coordination protocols
-- Update documentation and agent registries
-- Ensure seamless ecosystem integration
+- Gather requirements through clarifying questions
+- Read the agent template from `templates/agent_template.mdc`
+- Fill all placeholders with agent-specific content
+- Write the completed agent to `agents/{category}/agent-name.mdc`
+- Provide guidance on post-creation integration
+
+**Template Files:**
+- `templates/agent_template.mdc` - Main agent structure with placeholders
+- `templates/specialist_checklist.yaml` - For specialist agents (most agents)
+- `templates/coordinator_checklist.yaml` - For coordinator agents
 
 ### **Dynamic Agent Consultation**
 Agents can consult other specialists during task execution without switching personas:

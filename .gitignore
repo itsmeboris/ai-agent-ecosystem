@@ -10,7 +10,9 @@ Thumbs.db
 # IDE and editor files
 .vscode/
 .cursor/
+.claude/
 .idea/
+.cursorignore
 *.swp
 *.swo
 *~

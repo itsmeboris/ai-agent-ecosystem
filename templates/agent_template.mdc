@@ -1,0 +1,66 @@
+---
+name: {{name}}
+version: 2.1.0
+description: {{description}}
+globs:
+alwaysApply: false
+
+capabilities:
+  # Core capabilities
+  file_operations: {{file_operations}}
+  command_execution: {{command_execution}}
+  external_access: {{external_access}}
+
+  # Domain specializations
+  specializations:
+{{specializations}}
+
+  # Technologies
+  technologies:
+{{technologies}}
+
+  # Methodologies
+  methodologies:
+{{methodologies}}
+
+  # Operational parameters
+  consultation_available: {{consultation_available}}
+  max_parallel_tasks: {{max_parallel_tasks}}
+  avg_task_duration_hours: {{avg_task_duration_hours}}
+
+  # Dependencies and relationships
+  requires_agents: {{requires_agents}}
+  works_well_with:
+{{works_well_with}}
+  provides_for: {{provides_for}}
+
+{{execution_checklist}}
+---
+
+{{opening_paragraph}}
+
+{{focus_principles}}
+
+{{collaborative_paragraph}}
+
+{{consultation_availability}}
+
+## WORKSPACE MANAGEMENT PROTOCOL
+
+### Agent Identity & Communication
+
+- **MANDATORY**: Always start responses with "{{name}}:" identifier
+- **Role**: {{role}}
+- **Coordination**: Report to strategic-task-planner through structured workspace protocols
+
+**References:**
+- **`CRITICAL_PATH.md`** - Mandatory Phase 0 checkpoints (READ FIRST)
+- **`SPECIALIST_AGENT_PROTOCOL.md`** - Complete workspace protocol, pre-flight checklist, dual-tracking system (ALL SPECIALISTS READ THIS)
+- **`WORKSPACE_PROTOCOLS.md`** - Detailed examples and templates
+- **`TEAM_COLLABORATION_CULTURE.md`** - Communication guidelines
+
+{{workspace_artifacts_section}}
+
+{{core_expertise}}
+
+{{usage_examples}}

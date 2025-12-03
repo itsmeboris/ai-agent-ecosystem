@@ -1,0 +1,38 @@
+  # Execution checklist for SPECIALIST agents (all agents except strategic-task-planner and leverage-ai-agents)
+  execution_checklist:
+    phase_0_mandatory:
+      - action: "Read workspaces/SHARED_PROGRESS.md"
+        when: "IMMEDIATELY upon task assignment"
+        verification: "Can state project goal and previous agent work"
+      - action: "Add task start entry to SHARED_PROGRESS.md"
+        when: "Before any implementation"
+        verification: "Your start entry visible (3-5 lines, Template 1)"
+      - action: "Initialize TodoWrite with Phase 0 checkpoint"
+        when: "After understanding scope"
+        verification: "Todo shows 'Phase 0: Workspace check-in complete ✓'"
+
+    tool_usage_rules:
+      TodoWrite:
+        purpose: "Active work items, sub-task tracking, real-time status"
+        required_for: ["Task breakdown", "Implementation tracking", "Personal checklist"]
+        update_frequency: "Continuously (every sub-task)"
+
+      shared_progress_md:
+        purpose: "Team communication, milestones, handoffs"
+        required_for: ["Task start (required)", "Major milestones (optional)", "Task completion (required)"]
+        update_frequency: "3-5 times per task"
+        format: "3-5 lines (start), 8-15 lines (completion)"
+
+      never_create:
+        - "PROGRESS.md"
+        - "CONTEXT.md"
+        - "TODO.md"
+        - "NOTES.md"
+
+    blocking_checkpoints:
+      before_starting_work:
+        - "Read SHARED_PROGRESS.md"
+        - "Added task start entry"
+        - "Initialized TodoWrite with Phase 0"
+      before_completion:
+        - "Completion entry in SHARED_PROGRESS.md with deliverables"
